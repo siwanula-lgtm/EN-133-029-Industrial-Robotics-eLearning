@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Review Sheet 02 - จลนศาสตร์และพลศาสตร์ของหุ่นยนต์</title>
+<link rel="stylesheet" href="sheet.css">
+</head>
+<body>
+<div class="toolbar"><button onclick="window.print()">🖨️ พิมพ์ / บันทึก PDF</button></div>
+<div class="page">
+
+  <div class="sheet-header">
+    <div>
+      <div class="title">📡 Review Sheet หน่วยที่ 2 — จลนศาสตร์และพลศาสตร์ของหุ่นยนต์</div>
+      <div class="sub">EN-133-029 Industrial Robotics · Robot Kinematics and Dynamics</div>
+    </div>
+    <div class="meta">
+      สัปดาห์ที่ 2–3 · ท 4 / ป 4 ชม. · CLO2, CLO3, CLO4<br>
+      ใบงานปฏิบัติ 2 ใบงาน
+    </div>
+  </div>
+
+  <div class="columns">
+    <div class="col">
+      <div class="section">
+        <div class="section-header"><span class="icon">📌</span> 1. สาระสำคัญ</div>
+        <div class="section-body">
+          <p>จลนศาสตร์ (Kinematics) ของหุ่นยนต์ศึกษาความสัมพันธ์ระหว่างมุม/ระยะของข้อต่อกับตำแหน่งและทิศทางของปลายแขน โดยไม่พิจารณาแรงที่ทำให้เกิดการเคลื่อนที่ แบ่งเป็นจลนศาสตร์ตรง (Forward Kinematics) ที่คำนวณตำแหน่งปลายแขนจากมุมข้อต่อที่ทราบ และจลนศาสตร์ผกผัน (Inverse Kinematics) ที่คำนวณมุมข้อต่อที่ต้องใช้เพื่อให้ปลายแขนไปถึงตำแหน่งที่ต้องการ ทั้งสองใช้การแปลงพิกัดเอกพันธ์ (Homogeneous Transformation) เชื่อมโยงระบบพิกัดของแต่ละข้อต่อเข้าด้วยกันเป็นลูกโซ่ ส่วนพลศาสตร์ (Dynamics) …</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><span class="icon">🎯</span> 2. จุดประสงค์การเรียน (ทั่วไป)</div>
+        <div class="section-body">
+          <ul class="mini"><li>2.1 นำความรู้หลักการจลนศาสตร์ของหุ่นยนต์ไปใช้ได้</li><li>2.2 ปฏิบัติการตรวจสอบจลนศาสตร์ตรงของแขนกล 2-DOF ด้วย ESP32 ได้ถูกต้องและปลอดภัย</li><li>2.3 นำความรู้หลักการพลศาสตร์ของหุ่นยนต์ไปใช้ได้</li><li>2.4 ปฏิบัติการวิเคราะห์แรงบิดข้อต่อของแขนกล 2-DOF ด้วย ESP32 ได้ถูกต้องและปลอดภัย</li></ul>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><span class="icon">🧩</span> 3. หัวข้อเนื้อหาในหน่วย</div>
+        <div class="section-body">
+          <ul class="mini"><li>2.1 จลนศาสตร์ของหุ่นยนต์</li><li>2.2 การตรวจสอบจลนศาสตร์ตรงของแขนกล 2-DOF</li><li>2.3 พลศาสตร์ของหุ่นยนต์</li><li>2.4 การวิเคราะห์แรงบิดข้อต่อของแขนกล 2-DOF</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="section">
+        <div class="section-header"><span class="icon">📝</span> 4. บทสรุป</div>
+        <div class="section-body">
+          <p>จลนศาสตร์ของหุ่นยนต์ศึกษาความสัมพันธ์ระหว่างมุมข้อต่อกับตำแหน่งและทิศทางของปลายแขน โดยจลนศาสตร์ตรงคำนวณตำแหน่งปลายแขนจากมุมข้อต่อ จลนศาสตร์ผกผันคำนวณมุมข้อต่อจากตำแหน่งที่ต้องการ และการแปลงพิกัดเอกพันธ์ใช้เชื่อมโยงระบบพิกัดของข้อต่อแต่ละข้อ ส่วนพลศาสตร์ศึกษาแรงและแรงบิดที่ข้อต่อด้วยแผนภาพวัตถุอิสระ และเมทริกซ์จาโคเบียนเชื่อมโยงความเร็วข้อต่อกับความเร็วปลายแขน ความรู้เหล่านี้เป็นพื้นฐานของการเลือกขนาดมอเตอร์และการโปรแกรมควบคุมการเคลื่อนที่</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><span class="icon">❓</span> 5. คำถามทบทวน (จากแบบฝึกหัดท้ายหน่วย)</div>
+        <div class="section-body">
+          <ul class="mini"><li>แขนกลระนาบ 2 ท่อน มี L1 = 30 ซม. L2 = 20 ซม. หาก θ1 = 0 องศา และ θ2 = 90 องศา จงคำนวณตำแหน่ง (x, y) ของปลายแขน</li><li>เพราะเหตุใดปัญหาจลนศาสตร์ผกผัน (Inverse Kinematics) จึงอาจมีคำตอบมากกว่า 1 คำตอบ …</li><li>จงอธิบายความหมายของเมทริกซ์การแปลงพิกัดเอกพันธ์ (Homogeneous Transformation Matrix) …</li><li>จงยกตัวอย่างประโยชน์ของการใช้ซอฟต์แวร์จำลอง (เช่น RoboDK หรือ MATLAB Robotics Toolbox) ก่อนใช้งานหุ่นยนต์จริง …</li><li>เพราะเหตุใดข้อต่อที่อยู่ใกล้ฐานหุ่นยนต์มากที่สุดจึงมักต้องการมอเตอร์ที่มีแรงบิดสูงที่สุดในระบบ</li><li>จงอธิบายหลักการของการวิเคราะห์แบบแผนภาพวัตถุอิสระ (Free-Body Diagram) แบบไล่เรียงย้อนกลับ (Backward …</li></ul>
+        </div>
+      </div>
+      <div class="section warn">
+        <div class="section-header"><span class="icon">⚠️</span> ข้อควรระวังด้านความปลอดภัย (ใบงานปฏิบัติ)</div>
+        <div class="section-body">
+          <ul class="mini"><li>รับชุดฝึก ตรวจความพร้อมของอุปกรณ์ตามรายการ และอ่านข้อควรระวังด้านความปลอดภัยร่วมกับครูผู้สอน</li><li>เตรียมความพร้อมและปฏิบัติตามข้อควรระวังด้านความปลอดภัย</li></ul>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><span class="icon">🔧</span> 6. เชื่อมโยงกับใบงานปฏิบัติหน่วยเรียนที่ 2</div>
+        <div class="section-body">
+          <p><span class="accent">ใบงานปฏิบัติหน่วยเรียนที่ 2.1 / ใบงานปฏิบัติหน่วยเรียนที่ 2.2</span><br>เวลาปฏิบัติ 4 ชั่วโมง · ทำแบบทดสอบหลังเรียนหน่วยที่ 2 หลังทบทวน</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">EN-133-029 หุ่นยนต์อุตสาหกรรม · อาจารย์ศิวณุ เหล่าบุตรสา · สาขาวิชาวิศวกรรมเครื่องกลและเมคคาทรอนิกส์ มหาวิทยาลัยกาฬสินธุ์ · ภาคการศึกษาที่ 1/2569</div>
+</div>
+</body>
+</html>

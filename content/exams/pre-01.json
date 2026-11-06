@@ -1,0 +1,289 @@
+{
+  "moduleId": "01",
+  "kind": "pre",
+  "title": "Structure and Components of Industrial Robots",
+  "titleTh": "โครงสร้างและส่วนประกอบของหุ่นยนต์อุตสาหกรรม",
+  "timeMinutes": 15,
+  "questions": [
+    {
+      "id": 1,
+      "question": "หุ่นยนต์อุตสาหกรรมแบบใดมีการเคลื่อนที่ตามแนวแกน X-Y-Z แบบเชิงเส้นล้วน (3",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "Cartesian"
+        },
+        {
+          "key": "ข",
+          "text": "Cylindrical"
+        },
+        {
+          "key": "ค",
+          "text": "SCARA"
+        },
+        {
+          "key": "ง",
+          "text": "Articulated"
+        },
+        {
+          "key": "จ",
+          "text": "Delta"
+        }
+      ],
+      "answer": "ก",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ก. Cartesian"
+    },
+    {
+      "id": 2,
+      "question": "ข้อต่อ (Joint) ชนิดใดเคลื่อนที่แบบหมุนรอบแกน โดยกำหนดตำแหน่งด้วยมุมหมุน (θ)",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "Prismatic"
+        },
+        {
+          "key": "ข",
+          "text": "Linear"
+        },
+        {
+          "key": "ค",
+          "text": "Revolute"
+        },
+        {
+          "key": "ง",
+          "text": "Telescopic"
+        },
+        {
+          "key": "จ",
+          "text": "Fixed"
+        }
+      ],
+      "answer": "ค",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ค. Revolute"
+    },
+    {
+      "id": 3,
+      "question": "ระบบขับเคลื่อนชนิดใดให้แรง/แรงบิดสูงที่สุด เหมาะกับงานยกชิ้นงานที่มีน้ำหนักมาก",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "Electric Servo Drive"
+        },
+        {
+          "key": "ข",
+          "text": "Pneumatic Drive"
+        },
+        {
+          "key": "ค",
+          "text": "Hydraulic Drive"
+        },
+        {
+          "key": "ง",
+          "text": "Stepper Drive"
+        },
+        {
+          "key": "จ",
+          "text": "Belt Drive"
+        }
+      ],
+      "answer": "ค",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ค. Hydraulic Drive"
+    },
+    {
+      "id": 4,
+      "question": "หุ่นยนต์แบบ SCARA เหมาะสมที่สุดกับลักษณะงานใด",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "งานยกของหนักในแนวดิ่ง"
+        },
+        {
+          "key": "ข",
+          "text": "งานประกอบชิ้นส่วนความเร็วสูงในแนวราบ"
+        },
+        {
+          "key": "ค",
+          "text": "งานเชื่อมโครงสร้างขนาดใหญ่"
+        },
+        {
+          "key": "ง",
+          "text": "งานพ่นสีพื้นผิวโค้งซับซ้อน"
+        },
+        {
+          "key": "จ",
+          "text": "งานขนย้ายในที่แคบมาก"
+        }
+      ],
+      "answer": "ข",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ข. งานประกอบชิ้นส่วนความเร็วสูงในแนวราบ"
+    },
+    {
+      "id": 5,
+      "question": "ส่วนประกอบใดของหุ่นยนต์ทำหน้าที่ประมวลผลคำสั่งและควบคุมการเคลื่อนที่ของแขนกล",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "End-Effector"
+        },
+        {
+          "key": "ข",
+          "text": "Teach Pendant"
+        },
+        {
+          "key": "ค",
+          "text": "Power Supply"
+        },
+        {
+          "key": "ง",
+          "text": "Controller"
+        },
+        {
+          "key": "จ",
+          "text": "Base"
+        }
+      ],
+      "answer": "ง",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ง. Controller"
+    },
+    {
+      "id": 6,
+      "question": "องศาอิสระ (Degrees of Freedom) ของหุ่นยนต์แขนกล 6 แกนแบบ Articulated",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "3"
+        },
+        {
+          "key": "ข",
+          "text": "4"
+        },
+        {
+          "key": "ค",
+          "text": "5"
+        },
+        {
+          "key": "ง",
+          "text": "7"
+        },
+        {
+          "key": "จ",
+          "text": "6"
+        }
+      ],
+      "answer": "จ",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ จ. 6"
+    },
+    {
+      "id": 7,
+      "question": "ระบบพิกัดใดที่มีจุดกำเนิด (Origin) ยึดติดอยู่กับปลายเครื่องมือหรืออุปกรณ์จับยึดของหุ่นยนต์",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "World Frame"
+        },
+        {
+          "key": "ข",
+          "text": "Base Frame"
+        },
+        {
+          "key": "ค",
+          "text": "Joint Frame"
+        },
+        {
+          "key": "ง",
+          "text": "Tool Frame"
+        },
+        {
+          "key": "จ",
+          "text": "Ground Frame"
+        }
+      ],
+      "answer": "ง",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ง. Tool Frame"
+    },
+    {
+      "id": 8,
+      "question": "มือจับหรืออุปกรณ์ที่ติดตั้งปลายแขนกลเพื่อทำงานกับชิ้นงาน เรียกว่าอะไร",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "Link"
+        },
+        {
+          "key": "ข",
+          "text": "End-Effector"
+        },
+        {
+          "key": "ค",
+          "text": "Base"
+        },
+        {
+          "key": "ง",
+          "text": "Actuator"
+        },
+        {
+          "key": "จ",
+          "text": "Sensor"
+        }
+      ],
+      "answer": "ข",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ข. End-Effector"
+    },
+    {
+      "id": 9,
+      "question": "ข้อใดเป็นการประยุกต์ใช้หุ่นยนต์อุตสาหกรรมในลักษณะ Material Handling",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "การหยิบ-วางและจัดเรียงพาเลท"
+        },
+        {
+          "key": "ข",
+          "text": "การเชื่อมตัวถังรถยนต์"
+        },
+        {
+          "key": "ค",
+          "text": "การพ่นสีชิ้นงาน"
+        },
+        {
+          "key": "ง",
+          "text": "การตรวจสอบคุณภาพด้วยกล้อง"
+        },
+        {
+          "key": "จ",
+          "text": "การประกอบแผงวงจร"
+        }
+      ],
+      "answer": "ก",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ก. การหยิบ-วางและจัดเรียงพาเลท"
+    },
+    {
+      "id": 10,
+      "question": "ระบบขับเคลื่อนชนิดใดที่นิยมใช้มากที่สุดในหุ่นยนต์อุตสาหกรรมปัจจุบัน",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "Hydraulic Drive"
+        },
+        {
+          "key": "ข",
+          "text": "Pneumatic Drive"
+        },
+        {
+          "key": "ค",
+          "text": "Manual Drive"
+        },
+        {
+          "key": "ง",
+          "text": "Chain Drive"
+        },
+        {
+          "key": "จ",
+          "text": "Electric Servo Drive"
+        }
+      ],
+      "answer": "จ",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ จ. Electric Servo Drive"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Review Sheet 06 - การเชื่อมต่อหุ่นยนต์กับระบบอัตโนมัติ</title>
+<link rel="stylesheet" href="sheet.css">
+</head>
+<body>
+<div class="toolbar"><button onclick="window.print()">🖨️ พิมพ์ / บันทึก PDF</button></div>
+<div class="page">
+
+  <div class="sheet-header">
+    <div>
+      <div class="title">📡 Review Sheet หน่วยที่ 6 — การเชื่อมต่อหุ่นยนต์กับระบบอัตโนมัติ</div>
+      <div class="sub">EN-133-029 Industrial Robotics · Integrating Robots with Automation Systems</div>
+    </div>
+    <div class="meta">
+      สัปดาห์ที่ 9–10 · ท 4 / ป 4 ชม. · CLO2, CLO3, CLO4<br>
+      ใบงานปฏิบัติ 2 ใบงาน
+    </div>
+  </div>
+
+  <div class="columns">
+    <div class="col">
+      <div class="section">
+        <div class="section-header"><span class="icon">📌</span> 1. สาระสำคัญ</div>
+        <div class="section-body">
+          <p>หุ่นยนต์อุตสาหกรรมที่ทำงานเดี่ยวโดยไม่เชื่อมต่อกับระบบอื่นมีประโยชน์ในเชิงการผลิตจำกัด การนำหุ่นยนต์ไปใช้งานจริงในสายการผลิตอัตโนมัติจึงต้องอาศัย การเชื่อมต่อกับอุปกรณ์และระบบภายนอกหลายส่วน ได้แก่ สายพานลำเลียงที่ลำเลียงชิ้นงานเข้า-ออกจากตำแหน่งทำงานของหุ่นยนต์ คอนโทรลเลอร์หลักของระบบ เช่น PLC ที่สื่อสารกับหุ่นยนต์ผ่านสัญญาณ Digital I/O แบบเดินสายตรง หรือผ่านเครือข่าย Fieldbus และการสื่อสารแบบอนุกรม เพื่อประสานจังหวะการทำงาน (Handshaking) ระหว่างอุปกรณ์ต่าง ๆ ด้วยสัญญาณ Part Ready, Robot Busy และ Cycle Done …</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><span class="icon">🎯</span> 2. จุดประสงค์การเรียน (ทั่วไป)</div>
+        <div class="section-body">
+          <ul class="mini"><li>6.1 เข้าใจหลักการเชื่อมต่อและการสื่อสารของหุ่นยนต์กับระบบอัตโนมัติได้</li><li>6.2 ปฏิบัติการจำลองการทำงานร่วมกันของหุ่นยนต์กับระบบอัตโนมัติด้วยสัญญาณ Handshaking</li><li>6.3 นำความรู้หลักการออกแบบและทดสอบระบบหุ่นยนต์ในสายการผลิตไปใช้ได้</li><li>6.4 ปฏิบัติการเขียนโปรแกรม Pick and Place ร่วมกับมือจับจำลองด้วย ESP32</li></ul>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><span class="icon">🧩</span> 3. หัวข้อเนื้อหาในหน่วย</div>
+        <div class="section-body">
+          <ul class="mini"><li>6.1 การเชื่อมต่อและการสื่อสารของหุ่นยนต์กับระบบอัตโนมัติ</li><li>6.2 การจำลองสัญญาณ Handshaking ระหว่างหุ่นยนต์กับระบบอัตโนมัติ</li><li>6.3 การออกแบบและทดสอบระบบหุ่นยนต์ในสายการผลิต</li><li>6.4 การเขียนโปรแกรม Pick and Place ร่วมกับมือจับจำลอง</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="section">
+        <div class="section-header"><span class="icon">📝</span> 4. บทสรุป</div>
+        <div class="section-body">
+          <p>การเชื่อมต่อหุ่นยนต์กับระบบอัตโนมัติอาศัยสัญญาณ I/O และการสื่อสารข้อมูลระหว่างหุ่นยนต์ คอนโทรลเลอร์ สายพานลำเลียง และเครื่องจักรอื่น โดยใช้สัญญาณ Handshaking ให้ทุกอุปกรณ์ทำงานสอดคล้องกัน การออกแบบระบบหุ่นยนต์ในสายการผลิตต้องพิจารณาลำดับการทำงาน การเชื่อมต่อระบบนิวเมติกส์สำหรับมือจับ และการเขียนโปรแกรม Pick and Place จากนั้นจึงทดสอบและประเมินผลระบบด้วยรอบเวลาการทำงานและความถูกต้องของการทำงาน</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><span class="icon">❓</span> 5. คำถามทบทวน (จากแบบฝึกหัดท้ายหน่วย)</div>
+        <div class="section-body">
+          <ul class="mini"><li>จงเปรียบเทียบข้อดี-ข้อจำกัดของการเชื่อมต่อสายพานลำเลียงแบบ Fixed Pick Point กับแบบ Conveyor Tracking</li><li>เพราะเหตุใดระบบขนาดใหญ่ที่มีอุปกรณ์จำนวนมากจึงนิยมใช้ Fieldbus แทน Digital I/O แบบเดินสายตรง</li><li>หากหุ่นยนต์ยกสัญญาณ Robot Busy ขึ้นเป็น 1 แล้ว แต่ PLC ยังคงส่งสัญญาณ Part Ready สำหรับชิ้นงานถัดไปเข้ามาซ้อน …</li><li>จงยกตัวอย่างปัจจัยหนึ่งที่ต้องพิจารณาในการวางผัง Work Envelope …</li><li>ในผังงานโปรแกรม Pick and Place หากลืมใส่คำสั่ง M_OUT(Busy)=1 ก่อนเริ่มเคลื่อนที่หยิบชิ้นงาน …</li><li>เหตุใดวาล์วโซลินอยด์แบบ Double-Solenoid …</li></ul>
+        </div>
+      </div>
+      <div class="section warn">
+        <div class="section-header"><span class="icon">⚠️</span> ข้อควรระวังด้านความปลอดภัย (ใบงานปฏิบัติ)</div>
+        <div class="section-body">
+          <ul class="mini"><li>รับชุดฝึก ตรวจความพร้อมของอุปกรณ์ตามรายการ และอ่านข้อควรระวังด้านความปลอดภัยร่วมกับครูผู้สอน</li><li>เตรียมความพร้อมและปฏิบัติตามข้อควรระวังด้านความปลอดภัย</li></ul>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><span class="icon">🔧</span> 6. เชื่อมโยงกับใบงานปฏิบัติหน่วยเรียนที่ 6</div>
+        <div class="section-body">
+          <p><span class="accent">ใบงานปฏิบัติหน่วยเรียนที่ 6.1 / ใบงานปฏิบัติหน่วยเรียนที่ 6.2</span><br>เวลาปฏิบัติ 4 ชั่วโมง · ทำแบบทดสอบหลังเรียนหน่วยที่ 6 หลังทบทวน</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">EN-133-029 หุ่นยนต์อุตสาหกรรม · อาจารย์ศิวณุ เหล่าบุตรสา · สาขาวิชาวิศวกรรมเครื่องกลและเมคคาทรอนิกส์ มหาวิทยาลัยกาฬสินธุ์ · ภาคการศึกษาที่ 1/2569</div>
+</div>
+</body>
+</html>

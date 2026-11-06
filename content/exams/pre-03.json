@@ -1,0 +1,289 @@
+{
+  "moduleId": "03",
+  "kind": "pre",
+  "title": "Sequential Control Programming and Sensors for Robots",
+  "titleTh": "การเขียนโปรแกรมควบคุมแบบลำดับและเซนเซอร์สำหรับหุ่นยนต์",
+  "timeMinutes": 15,
+  "questions": [
+    {
+      "id": 1,
+      "question": "ระบบควบคุมหุ่นยนต์ประเภทใดเหมาะกับงานที่มีรอบการเคลื่อนที่แบบง่าย เช่น",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "Intelligent Control"
+        },
+        {
+          "key": "ข",
+          "text": "Playback Continuous Path"
+        },
+        {
+          "key": "ค",
+          "text": "Playback Point-to-Point"
+        },
+        {
+          "key": "ง",
+          "text": "Limited Sequence Control"
+        },
+        {
+          "key": "จ",
+          "text": "Adaptive Control"
+        }
+      ],
+      "answer": "ง",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ง. Limited Sequence Control"
+    },
+    {
+      "id": 2,
+      "question": "วิธีการโปรแกรมหุ่นยนต์แบบใดใช้การจับแขนหุ่นยนต์เคลื่อนที่ไปยังตำแหน่งจริงแล้วบันทึกด้วย",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "Off-line Programming"
+        },
+        {
+          "key": "ข",
+          "text": "Leadthrough Programming"
+        },
+        {
+          "key": "ค",
+          "text": "Computer-like Robot Language"
+        },
+        {
+          "key": "ง",
+          "text": "Simulation Programming"
+        },
+        {
+          "key": "จ",
+          "text": "Vision-guided Programming"
+        }
+      ],
+      "answer": "ข",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ข. Leadthrough Programming"
+    },
+    {
+      "id": 3,
+      "question": "ส่วนใดของ Teach Pendant ทำหน้าที่แสดงผลและใช้แก้ไขโปรแกรมของหุ่นยนต์",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "Operation Switch"
+        },
+        {
+          "key": "ข",
+          "text": "Optimal Key"
+        },
+        {
+          "key": "ค",
+          "text": "Touch Panel"
+        },
+        {
+          "key": "ง",
+          "text": "Emergency Switch"
+        },
+        {
+          "key": "จ",
+          "text": "Power Supply"
+        }
+      ],
+      "answer": "ค",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ค. Touch Panel"
+    },
+    {
+      "id": 4,
+      "question": "ผู้ใช้งานระดับใดสามารถสั่ง Start/Stop และดูการทำงานของโปรแกรมได้เท่านั้น",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "Administrator"
+        },
+        {
+          "key": "ข",
+          "text": "Engineer"
+        },
+        {
+          "key": "ค",
+          "text": "Operator"
+        },
+        {
+          "key": "ง",
+          "text": "Programmer"
+        },
+        {
+          "key": "จ",
+          "text": "Supervisor"
+        }
+      ],
+      "answer": "ค",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ค. Operator"
+    },
+    {
+      "id": 5,
+      "question": "คำสั่งใดใช้สั่งให้หุ่นยนต์เคลื่อนที่ไปยังตำแหน่งที่กำหนดตามแนวเส้นตรง (Linear",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "MOV"
+        },
+        {
+          "key": "ข",
+          "text": "MVS"
+        },
+        {
+          "key": "ค",
+          "text": "DLY"
+        },
+        {
+          "key": "ง",
+          "text": "OVRD"
+        },
+        {
+          "key": "จ",
+          "text": "GOTO"
+        }
+      ],
+      "answer": "ข",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ข. MVS"
+    },
+    {
+      "id": 6,
+      "question": "เซนเซอร์ประเภทใดจัดอยู่ในกลุ่ม Internal Sensor ของหุ่นยนต์อุตสาหกรรม",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "Encoder ตรวจสอบตำแหน่งข้อต่อ"
+        },
+        {
+          "key": "ข",
+          "text": "Proximity Sensor"
+        },
+        {
+          "key": "ค",
+          "text": "Machine Vision"
+        },
+        {
+          "key": "ง",
+          "text": "Tactile Sensor"
+        },
+        {
+          "key": "จ",
+          "text": "Photocell"
+        }
+      ],
+      "answer": "ก",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ก. Encoder ตรวจสอบตำแหน่งข้อต่อ"
+    },
+    {
+      "id": 7,
+      "question": "คำสั่งใดในภาษาโปรแกรมหุ่นยนต์ใช้อ่านค่าสถานะสัญญาณเข้าจากเซนเซอร์ภายนอก",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "M_OUT"
+        },
+        {
+          "key": "ข",
+          "text": "DEF IO"
+        },
+        {
+          "key": "ค",
+          "text": "GOSUB"
+        },
+        {
+          "key": "ง",
+          "text": "SPD"
+        },
+        {
+          "key": "จ",
+          "text": "M_IN"
+        }
+      ],
+      "answer": "จ",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ จ. M_IN"
+    },
+    {
+      "id": 8,
+      "question": "จากคำสั่ง \"IF M_IN(1) = 1 THEN GOTO PICK ELSE GOTO WAIT\"",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "PICK"
+        },
+        {
+          "key": "ข",
+          "text": "WAIT"
+        },
+        {
+          "key": "ค",
+          "text": "START"
+        },
+        {
+          "key": "ง",
+          "text": "END"
+        },
+        {
+          "key": "จ",
+          "text": "วนซ้ำที่บรรทัดเดิม"
+        }
+      ],
+      "answer": "ก",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ก. PICK"
+    },
+    {
+      "id": 9,
+      "question": "คำสั่งใดใช้เรียกโปรแกรมย่อยให้ทำงาน",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "GOTO"
+        },
+        {
+          "key": "ข",
+          "text": "IF...THEN"
+        },
+        {
+          "key": "ค",
+          "text": "DEF IO"
+        },
+        {
+          "key": "ง",
+          "text": "WAIT"
+        },
+        {
+          "key": "จ",
+          "text": "GOSUB...RETURN"
+        }
+      ],
+      "answer": "จ",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ จ. GOSUB...RETURN"
+    },
+    {
+      "id": 10,
+      "question": "การเขียนโปรแกรมนับจำนวนรอบการทำงานด้วยตัวแปร COUNTER มีประโยชน์อย่างไร",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "ทำให้หุ่นยนต์เคลื่อนที่เร็วขึ้น"
+        },
+        {
+          "key": "ข",
+          "text": "ลดแรงบิดที่ข้อต่อ"
+        },
+        {
+          "key": "ค",
+          "text": "เพิ่มความแม่นยำของเซนเซอร์"
+        },
+        {
+          "key": "ง",
+          "text": "ใช้กำหนดจำนวนรอบการทำงานหรือจำนวนชิ้นงานที่ผลิตได้"
+        },
+        {
+          "key": "จ",
+          "text": "ลดการใช้พลังงานไฟฟ้า"
+        }
+      ],
+      "answer": "ง",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ง. ใช้กำหนดจำนวนรอบการทำงานหรือจำนวนชิ้นงานที่ผลิตได้"
+    }
+  ]
+}

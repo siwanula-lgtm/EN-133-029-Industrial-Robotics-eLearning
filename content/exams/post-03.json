@@ -1,0 +1,289 @@
+{
+  "moduleId": "03",
+  "kind": "post",
+  "title": "Sequential Control Programming and Sensors for Robots",
+  "titleTh": "การเขียนโปรแกรมควบคุมแบบลำดับและเซนเซอร์สำหรับหุ่นยนต์",
+  "timeMinutes": 15,
+  "questions": [
+    {
+      "id": 1,
+      "question": "ระบบควบคุมหุ่นยนต์แบบใดที่ตัวควบคุมมีหน่วยความจำบันทึกลำดับตำแหน่งจากการสอนงานแล้วเล่นซ้ำแบบจุดต่อจุด",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "Limited Sequence Control"
+        },
+        {
+          "key": "ข",
+          "text": "Playback Continuous Path"
+        },
+        {
+          "key": "ค",
+          "text": "Intelligent Control"
+        },
+        {
+          "key": "ง",
+          "text": "Off-line Control"
+        },
+        {
+          "key": "จ",
+          "text": "Playback Point-to-Point"
+        }
+      ],
+      "answer": "จ",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ จ. Playback Point-to-Point"
+    },
+    {
+      "id": 2,
+      "question": "วิธีการโปรแกรมหุ่นยนต์แบบใดที่สามารถเตรียมและทดสอบโปรแกรมบนคอมพิวเตอร์ก่อน",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "Leadthrough Programming"
+        },
+        {
+          "key": "ข",
+          "text": "Teach Pendant Programming"
+        },
+        {
+          "key": "ค",
+          "text": "Off-line Programming"
+        },
+        {
+          "key": "ง",
+          "text": "Manual Programming"
+        },
+        {
+          "key": "จ",
+          "text": "Vision Programming"
+        }
+      ],
+      "answer": "ค",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ค. Off-line Programming"
+    },
+    {
+      "id": 3,
+      "question": "ผู้ใช้งานระดับใดของ Teach Pendant",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "Administrator"
+        },
+        {
+          "key": "ข",
+          "text": "Operator"
+        },
+        {
+          "key": "ค",
+          "text": "Engineer"
+        },
+        {
+          "key": "ง",
+          "text": "Programmer"
+        },
+        {
+          "key": "จ",
+          "text": "Guest"
+        }
+      ],
+      "answer": "ก",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ก. Administrator"
+    },
+    {
+      "id": 4,
+      "question": "คำสั่งใดสั่งให้หุ่นยนต์เคลื่อนที่ไปยังตำแหน่งที่กำหนดโดยคำนวณระยะทาง/ทิศทางที่เหมาะสมที่สุดแบบ Joint Interpolation",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "MVS"
+        },
+        {
+          "key": "ข",
+          "text": "DLY"
+        },
+        {
+          "key": "ค",
+          "text": "OVRD"
+        },
+        {
+          "key": "ง",
+          "text": "SPD"
+        },
+        {
+          "key": "จ",
+          "text": "MOV"
+        }
+      ],
+      "answer": "จ",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ จ. MOV"
+    },
+    {
+      "id": 5,
+      "question": "เซนเซอร์ชนิดใดใช้ตรวจสอบความบกพร่องของชิ้นงาน บ่งชี้ตำแหน่ง",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "Tactile Sensor"
+        },
+        {
+          "key": "ข",
+          "text": "Proximity Sensor"
+        },
+        {
+          "key": "ค",
+          "text": "Encoder"
+        },
+        {
+          "key": "ง",
+          "text": "Machine Vision"
+        },
+        {
+          "key": "จ",
+          "text": "Thermocouple"
+        }
+      ],
+      "answer": "ง",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ง. Machine Vision"
+    },
+    {
+      "id": 6,
+      "question": "คำสั่งใดใช้กำหนดสถานะสัญญาณออก (Output) ไปควบคุมอุปกรณ์ภายนอก เช่น",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "M_IN"
+        },
+        {
+          "key": "ข",
+          "text": "DEF IO"
+        },
+        {
+          "key": "ค",
+          "text": "GOSUB"
+        },
+        {
+          "key": "ง",
+          "text": "M_OUT"
+        },
+        {
+          "key": "จ",
+          "text": "WAIT"
+        }
+      ],
+      "answer": "ง",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ง. M_OUT"
+    },
+    {
+      "id": 7,
+      "question": "จากคำสั่ง \"DEF IO SENSOR1 = BIT,1\" มีวัตถุประสงค์เพื่ออะไร",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "ลดความเร็วของหุ่นยนต์"
+        },
+        {
+          "key": "ข",
+          "text": "ตั้งชื่อตัวแปรแทนหมายเลขบิต I/O เพื่อให้อ่านโปรแกรมง่ายขึ้น"
+        },
+        {
+          "key": "ค",
+          "text": "เพิ่มแรงบิดของมอเตอร์"
+        },
+        {
+          "key": "ง",
+          "text": "กำหนดตำแหน่งเริ่มต้นของหุ่นยนต์"
+        },
+        {
+          "key": "จ",
+          "text": "สร้างโปรแกรมย่อยใหม่"
+        }
+      ],
+      "answer": "ข",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ข. ตั้งชื่อตัวแปรแทนหมายเลขบิต I/O เพื่อให้อ่านโปรแกรมง่ายขึ้น"
+    },
+    {
+      "id": 8,
+      "question": "คำสั่งใดเมื่อทำงานเสร็จแล้วจะย้อนกลับไปทำงานต่อจากบรรทัดถัดจากจุดที่เรียกใช้งาน",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "GOTO"
+        },
+        {
+          "key": "ข",
+          "text": "RETURN"
+        },
+        {
+          "key": "ค",
+          "text": "IF...THEN"
+        },
+        {
+          "key": "ง",
+          "text": "END"
+        },
+        {
+          "key": "จ",
+          "text": "DLY"
+        }
+      ],
+      "answer": "ข",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ข. RETURN"
+    },
+    {
+      "id": 9,
+      "question": "ตัวแปร COUNTER ในโปรแกรมควบคุมหุ่นยนต์มักถูกนำไปใช้ในลักษณะใด",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "วัดอุณหภูมิของมอเตอร์"
+        },
+        {
+          "key": "ข",
+          "text": "คำนวณตำแหน่งปลายแขน"
+        },
+        {
+          "key": "ค",
+          "text": "นับจำนวนรอบการทำงานเพื่อควบคุมจำนวนชิ้นงานที่ผลิต"
+        },
+        {
+          "key": "ง",
+          "text": "วัดแรงดันไฟฟ้าของระบบ"
+        },
+        {
+          "key": "จ",
+          "text": "กำหนดความเร็วของข้อต่อ"
+        }
+      ],
+      "answer": "ค",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ค. นับจำนวนรอบการทำงานเพื่อควบคุมจำนวนชิ้นงานที่ผลิต"
+    },
+    {
+      "id": 10,
+      "question": "หากเซนเซอร์ตรวจจับชิ้นงานมีค่า M_IN(1) = 0 ในคำสั่ง \"IF M_IN(1) = 1 THEN",
+      "choices": [
+        {
+          "key": "ก",
+          "text": "กระโดดไปที่ WAIT เพื่อรอตรวจสอบสัญญาณใหม่"
+        },
+        {
+          "key": "ข",
+          "text": "กระโดดไปที่ PICK ทันที"
+        },
+        {
+          "key": "ค",
+          "text": "หยุดการทำงานของหุ่นยนต์ถาวร"
+        },
+        {
+          "key": "ง",
+          "text": "เพิ่มความเร็วของหุ่นยนต์"
+        },
+        {
+          "key": "จ",
+          "text": "เปิดมือจับทันทีโดยไม่ตรวจสอบ"
+        }
+      ],
+      "answer": "ก",
+      "explanation": "คำตอบที่ถูกต้องคือ ข้อ ก. กระโดดไปที่ WAIT เพื่อรอตรวจสอบสัญญาณใหม่"
+    }
+  ]
+}

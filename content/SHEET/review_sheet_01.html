@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Review Sheet 01 - โครงสร้างและส่วนประกอบของหุ่นยนต์อุตสาหกรรม</title>
+<link rel="stylesheet" href="sheet.css">
+</head>
+<body>
+<div class="toolbar"><button onclick="window.print()">🖨️ พิมพ์ / บันทึก PDF</button></div>
+<div class="page">
+
+  <div class="sheet-header">
+    <div>
+      <div class="title">📡 Review Sheet หน่วยที่ 1 — โครงสร้างและส่วนประกอบของหุ่นยนต์อุตสาหกรรม</div>
+      <div class="sub">EN-133-029 Industrial Robotics · Structure and Components of Industrial Robots</div>
+    </div>
+    <div class="meta">
+      สัปดาห์ที่ 1 · ท 2 / ป 2 ชม. · CLO2, CLO3, CLO4<br>
+      ใบงานปฏิบัติ 1 ใบงาน
+    </div>
+  </div>
+
+  <div class="columns">
+    <div class="col">
+      <div class="section">
+        <div class="section-header"><span class="icon">📌</span> 1. สาระสำคัญ</div>
+        <div class="section-body">
+          <p>หุ่นยนต์อุตสาหกรรม (Industrial Robot) คือเครื่องจักรกลอัตโนมัติที่สามารถโปรแกรมให้เคลื่อนที่ได้หลายแกนอิสระ เพื่อทำงานแทนมนุษย์ในกระบวนการผลิต โดยจำแนกตามโครงสร้างทางกลได้ 6 แบบหลัก ได้แก่ Cartesian, Cylindrical, Spherical, SCARA, Articulated และ Delta/Parallel ซึ่งแต่ละแบบมีขอบเขตการทำงาน (Work Envelope) และความเหมาะสมกับลักษณะงานที่แตกต่างกัน หุ่นยนต์ประกอบด้วยส่วนสำคัญ 4 ส่วน คือ แขนกล (Manipulator) ที่เชื่อมต่อกันด้วยข้อต่อ (Joint) ชนิดหมุน (Revolute) หรือเลื่อน (Prismatic) ระบบขับเคลื่อน (Drive System) …</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><span class="icon">🎯</span> 2. จุดประสงค์การเรียน (ทั่วไป)</div>
+        <div class="section-body">
+          <ul class="mini"><li>1.1 เข้าใจประเภทและการจำแนกหุ่นยนต์อุตสาหกรรมได้</li><li>1.2 เข้าใจส่วนประกอบหลักของหุ่นยนต์อุตสาหกรรมได้</li><li>1.3 เข้าใจหลักการทำงานและระบบพิกัดของหุ่นยนต์ได้</li><li>1.4 เข้าใจการนำหุ่นยนต์ไปใช้งานในอุตสาหกรรมได้</li><li>1.5 ปฏิบัติการควบคุมมุมหมุนของมอเตอร์เซอร์โวด้วย ESP32 ได้ถูกต้องและปลอดภัย</li></ul>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><span class="icon">🧩</span> 3. หัวข้อเนื้อหาในหน่วย</div>
+        <div class="section-body">
+          <ul class="mini"><li>1.1 ประเภทและการจำแนกหุ่นยนต์อุตสาหกรรม</li><li>1.2 ส่วนประกอบหลักของหุ่นยนต์อุตสาหกรรม</li><li>1.3 หลักการทำงานและระบบพิกัดของหุ่นยนต์</li><li>1.4 การนำหุ่นยนต์ไปใช้งานในอุตสาหกรรม</li><li>1.5 การควบคุมมุมหมุนของมอเตอร์เซอร์โวด้วย ESP32</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="section">
+        <div class="section-header"><span class="icon">📝</span> 4. บทสรุป</div>
+        <div class="section-body">
+          <p>หุ่นยนต์อุตสาหกรรมเป็นแขนกลอัตโนมัติที่โปรแกรมใหม่ได้ ควบคุมได้หลายแกน และใช้งานได้อเนกประสงค์ จำแนกตามโครงสร้างทางกลได้ 6 แบบหลัก ได้แก่ Cartesian, Cylindrical, Spherical, SCARA, Articulated และ Delta/Parallel ประกอบด้วยแขนกลที่เชื่อมต่อกันด้วยข้อต่อแบบ Revolute หรือ Prismatic ระบบขับเคลื่อนแบบไฟฟ้า ไฮดรอลิก หรือนิวเมติกส์ และระบบควบคุมที่ทำงานร่วมกับแผงสอนงาน การเข้าใจองศาอิสระ ขอบเขตการทำงาน และระบบพิกัดอ้างอิง (World, Base และ Tool Frame) เป็นพื้นฐานสำคัญในการเลือกใช้หุ่นยนต์ให้เหมาะสมกับงานเชื่อม งานพ่นสี งานลำเลียงวัสดุ และงานประกอบชิ้นส่วน รวมถึงการศึกษาจลนศาสตร์ในหน่วยเรียนถัดไป</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><span class="icon">❓</span> 5. คำถามทบทวน (จากแบบฝึกหัดท้ายหน่วย)</div>
+        <div class="section-body">
+          <ul class="mini"><li>จงอธิบายความแตกต่างระหว่างหุ่นยนต์แบบ Cartesian และ SCARA พร้อมยกตัวอย่างลักษณะงานที่เหมาะสมของแต่ละแบบ</li><li>จงจำแนกอุปกรณ์ต่อไปนี้ว่าเป็นข้อต่อชนิด Revolute หรือ Prismatic: (1) ข้อศอกหุ่นยนต์ที่หมุนเปลี่ยนมุม (2) …</li><li>เพราะเหตุใดหุ่นยนต์อุตสาหกรรมส่วนใหญ่ในปัจจุบันจึงออกแบบให้มี 6 แกน (6-DOF)</li><li>จงอธิบายความหมายของ &#x27;Tool Frame&#x27; และเหตุใดจึงต้องมีระบบพิกัดนี้แยกจาก Base Frame</li><li>หากต้องการเลือกระบบขับเคลื่อนสำหรับหุ่นยนต์ที่ทำงานในห้องคลีนรูมของโรงงานผลิตอิเล็กทรอนิกส์ ควรเลือกระบบใด …</li><li>จงยกตัวอย่างการประยุกต์ใช้หุ่นยนต์อุตสาหกรรมในโรงงาน 3 ประเภทงาน …</li></ul>
+        </div>
+      </div>
+      <div class="section warn">
+        <div class="section-header"><span class="icon">⚠️</span> ข้อควรระวังด้านความปลอดภัย (ใบงานปฏิบัติ)</div>
+        <div class="section-body">
+          <ul class="mini"><li>รับชุดฝึก ตรวจความพร้อมของอุปกรณ์ตามรายการ และอ่านข้อควรระวังด้านความปลอดภัยร่วมกับครูผู้สอน</li><li>เตรียมความพร้อมและปฏิบัติตามข้อควรระวังด้านความปลอดภัย</li></ul>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><span class="icon">🔧</span> 6. เชื่อมโยงกับใบงานปฏิบัติหน่วยเรียนที่ 1</div>
+        <div class="section-body">
+          <p><span class="accent">ใบงานปฏิบัติหน่วยเรียนที่ 1</span><br>เวลาปฏิบัติ 2 ชั่วโมง · ทำแบบทดสอบหลังเรียนหน่วยที่ 1 หลังทบทวน</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">EN-133-029 หุ่นยนต์อุตสาหกรรม · อาจารย์ศิวณุ เหล่าบุตรสา · สาขาวิชาวิศวกรรมเครื่องกลและเมคคาทรอนิกส์ มหาวิทยาลัยกาฬสินธุ์ · ภาคการศึกษาที่ 1/2569</div>
+</div>
+</body>
+</html>

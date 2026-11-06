@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Review Sheet 05 - ระบบควบคุมหุ่นยนต์แบบ PID</title>
+<link rel="stylesheet" href="sheet.css">
+</head>
+<body>
+<div class="toolbar"><button onclick="window.print()">🖨️ พิมพ์ / บันทึก PDF</button></div>
+<div class="page">
+
+  <div class="sheet-header">
+    <div>
+      <div class="title">📡 Review Sheet หน่วยที่ 5 — ระบบควบคุมหุ่นยนต์แบบ PID</div>
+      <div class="sub">EN-133-029 Industrial Robotics · PID Control Systems for Robots</div>
+    </div>
+    <div class="meta">
+      สัปดาห์ที่ 7 · ท 2 / ป 2 ชม. · CLO2, CLO3, CLO4<br>
+      ใบงานปฏิบัติ 1 ใบงาน
+    </div>
+  </div>
+
+  <div class="columns">
+    <div class="col">
+      <div class="section">
+        <div class="section-header"><span class="icon">📌</span> 1. สาระสำคัญ</div>
+        <div class="section-body">
+          <p>ระบบควบคุมหุ่นยนต์อุตสาหกรรมส่วนใหญ่อาศัยหลักการควบคุมป้อนกลับ (Feedback Control) โดยวัดค่าตำแหน่งหรือความเร็วจริงของข้อต่อด้วยเซนเซอร์ แล้วนำมาเปรียบเทียบกับค่าเป้าหมาย (Setpoint) เกิดเป็นค่าความผิดพลาด (Error) ที่ตัวควบคุมแบบ PID (Proportional-Integral-Derivative) นำไปคำนวณเป็นสัญญาณควบคุมส่งไปยังมอเตอร์ของข้อต่อ โดยพจน์ Proportional ตอบสนองต่อขนาดความผิดพลาดในปัจจุบัน พจน์ Integral กำจัดความผิดพลาด ที่ค้างอยู่ในสถานะคงตัว และพจน์ Derivative ช่วยหน่วงการแกว่งจากการเปลี่ยนแปลงอย่างรวดเร็ว …</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><span class="icon">🎯</span> 2. จุดประสงค์การเรียน (ทั่วไป)</div>
+        <div class="section-body">
+          <ul class="mini"><li>5.1 เข้าใจหลักการควบคุมแบบป้อนกลับและตัวควบคุม PID ได้</li><li>5.2 นำความรู้วิธีการประเมินผลการตอบสนองและการปรับจูนตัวควบคุม PID ไปใช้ได้</li><li>5.3 ปฏิบัติการควบคุมตำแหน่งข้อต่อด้วย PID บนบอร์ด ESP32 ได้ถูกต้องและปลอดภัย</li></ul>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><span class="icon">🧩</span> 3. หัวข้อเนื้อหาในหน่วย</div>
+        <div class="section-body">
+          <ul class="mini"><li>5.1 หลักการควบคุมแบบป้อนกลับและตัวควบคุม PID</li><li>5.2 การประเมินผลการตอบสนองและการปรับจูนตัวควบคุม PID</li><li>5.3 การควบคุมตำแหน่งข้อต่อด้วย PID</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="section">
+        <div class="section-header"><span class="icon">📝</span> 4. บทสรุป</div>
+        <div class="section-body">
+          <p>ระบบควบคุมป้อนกลับเปรียบเทียบค่าที่วัดได้กับค่าเป้าหมายแล้วปรับสัญญาณควบคุมอย่างต่อเนื่อง ตัวควบคุม PID ประกอบด้วยพจน์ P ที่ตอบสนองต่อความผิดพลาดปัจจุบัน พจน์ I ที่กำจัดความผิดพลาดสะสม และพจน์ D ที่ลดการแกว่ง การควบคุมแบบ Feedforward ช่วยชดเชยผลกระทบที่ทราบล่วงหน้า การประเมินผลใช้พารามิเตอร์การตอบสนอง เช่น เวลาขึ้น ค่าพุ่งเกิน และเวลาเข้าที่ ส่วนการปรับจูนทำได้ด้วยวิธีของซีเกลอร์-นิโคลส์ ก่อนนำไปใช้ควบคุมตำแหน่งข้อต่อของหุ่นยนต์</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><span class="icon">❓</span> 5. คำถามทบทวน (จากแบบฝึกหัดท้ายหน่วย)</div>
+        <div class="section-body">
+          <ul class="mini"><li>จงอธิบายบทบาทของพจน์ P, I และ D ในตัวควบคุม PID อย่างละหนึ่งประโยค</li><li>เพราะเหตุใดตัวควบคุมแบบ P เพียงอย่างเดียวจึงไม่สามารถกำจัด Steady-State Error ให้หมดได้ แม้จะเพิ่มค่า Kp …</li><li>หากเพิ่มค่า Ki มากเกินไปในระบบควบคุมตำแหน่งข้อต่อ จะเกิดผลอย่างไร และเพราะเหตุใด</li><li>จงยกตัวอย่างสถานการณ์ในงานหุ่นยนต์อุตสาหกรรมที่ควรใช้การควบคุมแบบ Feedforward ร่วมกับ Feedback …</li><li>จากกราฟผลตอบสนองแบบขั้นของระบบหนึ่ง พบว่าเอาต์พุตขึ้นถึง 90% ของค่าสุดท้ายที่เวลา 1.2 วินาที และขึ้นถึง 10% …</li><li>ระบบหนึ่งเมื่อทดสอบด้วยวิธีวัฏจักรท้ายสุด พบว่า Ku = 20 และ Pu = 2 วินาที จงคำนวณค่าเกน Kp, Ti และ Td …</li></ul>
+        </div>
+      </div>
+      <div class="section warn">
+        <div class="section-header"><span class="icon">⚠️</span> ข้อควรระวังด้านความปลอดภัย (ใบงานปฏิบัติ)</div>
+        <div class="section-body">
+          <ul class="mini"><li>รับชุดฝึก ตรวจความพร้อมของอุปกรณ์ตามรายการ และอ่านข้อควรระวังด้านความปลอดภัยร่วมกับครูผู้สอน</li><li>เตรียมความพร้อมและปฏิบัติตามข้อควรระวังด้านความปลอดภัย</li></ul>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><span class="icon">🔧</span> 6. เชื่อมโยงกับใบงานปฏิบัติหน่วยเรียนที่ 5</div>
+        <div class="section-body">
+          <p><span class="accent">ใบงานปฏิบัติหน่วยเรียนที่ 5</span><br>เวลาปฏิบัติ 2 ชั่วโมง · ทำแบบทดสอบหลังเรียนหน่วยที่ 5 หลังทบทวน</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">EN-133-029 หุ่นยนต์อุตสาหกรรม · อาจารย์ศิวณุ เหล่าบุตรสา · สาขาวิชาวิศวกรรมเครื่องกลและเมคคาทรอนิกส์ มหาวิทยาลัยกาฬสินธุ์ · ภาคการศึกษาที่ 1/2569</div>
+</div>
+</body>
+</html>
