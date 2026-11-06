@@ -12,7 +12,7 @@
 ต้องติดตั้ง [Docker Desktop](https://www.docker.com/products/docker-desktop/) ก่อน แล้วเปิด Terminal / PowerShell ในโฟลเดอร์นี้
 
 ```bash
-docker compose up -d --build     # build และเปิดเว็บ → http://localhost:3003
+docker compose up -d --build     # build และเปิดเว็บ → http://localhost:8030
 docker compose logs -f           # ดู log
 docker compose down              # หยุดเว็บ
 ```
@@ -23,7 +23,7 @@ docker compose down              # หยุดเว็บ
 
 ```bash
 docker build -t en-133-029-robotics-elearning .
-docker run -d -p 3003:3000 --name robotics-elearning en-133-029-robotics-elearning
+docker run -d -p 8030:3000 --name robotics-elearning en-133-029-robotics-elearning
 ```
 
 ## รันด้วย Node.js (สำหรับแก้ไขเนื้อหา)
@@ -32,7 +32,7 @@ docker run -d -p 3003:3000 --name robotics-elearning en-133-029-robotics-elearni
 
 ```bash
 npm install
-npm run dev          # เปิด http://localhost:3003 (แก้ไฟล์แล้วรีเฟรชได้ทันที)
+npm run dev          # เปิด http://localhost:8030 (แก้ไฟล์แล้วรีเฟรชได้ทันที)
 npm run check        # ตรวจความครบถ้วนและรูปแบบของเนื้อหา
 npm run build && npm start
 ```
