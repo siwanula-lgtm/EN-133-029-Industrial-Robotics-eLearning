@@ -131,62 +131,63 @@ GND แสดงสถานะการทำงานปกติ
 ตารางที่ 7.2 โค้ดภาษา
 MicroPython สำหรับการจำลองวงจรความปลอดภัยพื้นฐานของหุ่นยนต์
 
-| \# main.py -- ESP32 MicroPython: Robot safety-circuit simulation (E-Stop + Light Curtain + Reset) |
-|---------------------------------------------------------------------------------------------------|
-| from machine import Pin, PWM                                                                      |
-| import time                                                                                       |
-|                                                                                                   |
-| estop_btn = Pin(4, Pin.IN, Pin.PULL_UP) \# จำลองปุ่ม E-Stop (กด = LOW = หยุด)                        |
-| curtain_btn = Pin(5, Pin.IN, Pin.PULL_UP) \# จำลองม่านแสงนิรภัยถูกบดบัง (กด = LOW = หยุด)               |
-| reset_btn = Pin(19, Pin.IN, Pin.PULL_UP) \# ปุ่มรีเซ็ตกลับสู่การทำงานปกติ                                 |
-| status_led = Pin(2, Pin.OUT) \# LED แสดงสถานะทำงานปกติ/หยุด                                         |
-| arm_servo = PWM(Pin(18), freq=50) \# จำลองการเคลื่อนที่ต่อเนื่องของแขนกล                                 |
-|                                                                                                   |
-| def set_servo_angle(deg):                                                                         |
-| pulse_us = 500 + (deg / 180.0) \* 2000                                                            |
-| duty = int(pulse_us / 20000 \* 65535)                                                             |
-| arm_servo.duty_u16(duty)                                                                          |
-|                                                                                                   |
-| def safety_triggered():                                                                           |
-| \# Safety Input ใดๆ เป็น 0 (active-low) หมายถึงถูกกระตุ้นให้หยุด                                         |
-| return (estop_btn.value() == 0) or (curtain_btn.value() == 0)                                     |
-|                                                                                                   |
-| fault_latched = False \# สถานะล็อก (Latch) หลังเกิดเหตุหยุดฉุกเฉิน ต้องรีเซ็ตด้วยตนเองเท่านั้น                  |
-| angle = 0                                                                                         |
-| direction = 1                                                                                     |
-|                                                                                                   |
-| print('=== เริ่มทำงานปกติ: แขนกลจำลองเคลื่อนที่ต่อเนื่อง ===')                                              |
-| status_led.value(1)                                                                               |
-|                                                                                                   |
-| while True:                                                                                       |
-| if safety_triggered():                                                                            |
-| if not fault_latched:                                                                             |
-| fault_latched = True                                                                              |
-| status_led.value(0)                                                                               |
-| which = 'E-Stop' if estop_btn.value() == 0 else 'ม่านแสงนิรภัย'                                      |
-| print('!!! ตรวจพบสัญญาณความปลอดภัยจาก {} -\> หยุดหุ่นยนต์ทันที (Latched) !!!'.format(which))              |
-| \# ค้างสถานะหยุดไว้ที่ตำแหน่งปัจจุบัน ไม่เคลื่อนที่ต่อจนกว่าจะรีเซ็ต                                                |
-| time.sleep(0.05)                                                                                  |
-| continue                                                                                          |
-|                                                                                                   |
-| if fault_latched:                                                                                 |
-| \# ต้องกดปุ่ม Reset "และ" ปลดสัญญาณความปลอดภัยทั้งหมดแล้วเท่านั้น จึงจะกลับมาทำงานได้ (ป้องกันการรีสตาร์ทอัตโนมัติ)    |
-| if reset_btn.value() == 0:                                                                        |
-| fault_latched = False                                                                             |
-| status_led.value(1)                                                                               |
-| print('\>\>\> รีเซ็ตสำเร็จ: กลับสู่การทำงานปกติ \>\>\>')                                                 |
-| else:                                                                                             |
-| time.sleep(0.05)                                                                                  |
-| continue                                                                                          |
-|                                                                                                   |
-| \# ทำงานปกติ: แกว่งเซอร์โวไปมาต่อเนื่องจำลองการเคลื่อนที่ของแขนกล                                           |
-| angle += direction \* 3                                                                           |
-| if angle \>= 180:                                                                                 |
-| angle = 180; direction = -1                                                                       |
-| elif angle \<= 0:                                                                                 |
-| angle = 0; direction = 1                                                                          |
-| set_servo_angle(angle)                                                                            |
-| time.sleep(0.03)                                                                                  |
+```python
+# main.py -- ESP32 MicroPython: Robot safety-circuit simulation (E-Stop + Light Curtain + Reset)
+from machine import Pin, PWM
+import time
+
+estop_btn = Pin(4, Pin.IN, Pin.PULL_UP)          # จำลองปุ่ม E-Stop (กด = LOW = หยุด)
+curtain_btn = Pin(5, Pin.IN, Pin.PULL_UP)        # จำลองม่านแสงนิรภัยถูกบดบัง (กด = LOW = หยุด)
+reset_btn = Pin(19, Pin.IN, Pin.PULL_UP)         # ปุ่มรีเซ็ตกลับสู่การทำงานปกติ
+status_led = Pin(2, Pin.OUT)                     # LED แสดงสถานะทำงานปกติ/หยุด
+arm_servo = PWM(Pin(18), freq=50)                # จำลองการเคลื่อนที่ต่อเนื่องของแขนกล
+
+def set_servo_angle(deg):
+    pulse_us = 500 + (deg / 180.0) * 2000
+    duty = int(pulse_us / 20000 * 65535)
+    arm_servo.duty_u16(duty)
+
+def safety_triggered():
+    # Safety Input ใดๆ เป็น 0 (active-low) หมายถึงถูกกระตุ้นให้หยุด
+    return (estop_btn.value() == 0) or (curtain_btn.value() == 0)
+
+fault_latched = False   # สถานะล็อก (Latch) หลังเกิดเหตุหยุดฉุกเฉิน ต้องรีเซ็ตด้วยตนเองเท่านั้น
+angle = 0
+direction = 1
+
+print('=== เริ่มทำงานปกติ: แขนกลจำลองเคลื่อนที่ต่อเนื่อง ===')
+status_led.value(1)
+
+while True:
+    if safety_triggered():
+        if not fault_latched:
+            fault_latched = True
+            status_led.value(0)
+            which = 'E-Stop' if estop_btn.value() == 0 else 'ม่านแสงนิรภัย'
+            print('!!! ตรวจพบสัญญาณความปลอดภัยจาก {} -> หยุดหุ่นยนต์ทันที (Latched) !!!'.format(which))
+        # ค้างสถานะหยุดไว้ที่ตำแหน่งปัจจุบัน ไม่เคลื่อนที่ต่อจนกว่าจะรีเซ็ต
+        time.sleep(0.05)
+        continue
+
+    if fault_latched:
+        # ต้องกดปุ่ม Reset "และ" ปลดสัญญาณความปลอดภัยทั้งหมดแล้วเท่านั้น จึงจะกลับมาทำงานได้ (ป้องกันการรีสตาร์ทอัตโนมัติ)
+        if reset_btn.value() == 0:
+            fault_latched = False
+            status_led.value(1)
+            print('>>> รีเซ็ตสำเร็จ: กลับสู่การทำงานปกติ >>>')
+        else:
+            time.sleep(0.05)
+            continue
+
+    # ทำงานปกติ: แกว่งเซอร์โวไปมาต่อเนื่องจำลองการเคลื่อนที่ของแขนกล
+    angle += direction * 3
+    if angle >= 180:
+        angle = 180; direction = -1
+    elif angle <= 0:
+        angle = 0; direction = 1
+    set_servo_angle(angle)
+    time.sleep(0.03)
+```
 
 1\. อัปโหลดโค้ดไปยังบอร์ด ESP32 แล้วเปิดหน้าต่าง Serial Monitor
 สังเกตว่าเซอร์โวเคลื่อนที่แกว่งไปมาต่อเนื่องและ LED ติดสว่าง (ทำงานปกติ)

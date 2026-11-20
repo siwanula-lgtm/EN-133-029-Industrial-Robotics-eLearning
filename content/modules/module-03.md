@@ -191,39 +191,40 @@ ESP32 ได้ถูกต้อง โดยปฏิบัติตามล�
 ตารางที่ 3.2 โค้ดภาษา
 MicroPython สำหรับการเขียนโปรแกรมควบคุมแบบลำดับขั้นร่วมกับเซนเซอร์
 
-| \# main.py -- ESP32 MicroPython: sequential control with sensor check                  |
-|----------------------------------------------------------------------------------------|
-| \# Simulates robot commands: M_IN (sensor read) / HCLOSE-HOPEN (gripper) / GOTO (loop) |
-| from machine import Pin, PWM                                                           |
-| import time                                                                            |
-|                                                                                        |
-| sensor = Pin(4, Pin.IN) \# เทียบเท่า M_IN(1)                                             |
-| gripper = PWM(Pin(18), freq=50) \# เทียบเท่า HCLOSE / HOPEN                              |
-|                                                                                        |
-| def set_gripper(angle):                                                                |
-| duty = int(1638 + (angle / 180) \* (8192 - 1638))                                      |
-| gripper.duty_u16(duty)                                                                 |
-|                                                                                        |
-| def hopen():                                                                           |
-| set_gripper(90) \# gripper open                                                        |
-| print('HOPEN 1 -- มือจับเปิด')                                                            |
-|                                                                                        |
-| def hclose():                                                                          |
-| set_gripper(0) \# gripper close                                                        |
-| print('HCLOSE 1 -- มือจับปิด (ยึดชิ้นงาน)')                                                  |
-|                                                                                        |
-| counter = 0                                                                            |
-| hopen()                                                                                |
-| while True:                                                                            |
-| m_in1 = sensor.value() \# M_IN(1) : 0 หรือ 1 ตามชนิดโมดูล                                 |
-| print('M_IN(1) =', m_in1)                                                              |
-| if m_in1 == 1: \# IF M_IN(1) = 1 THEN \*PICK ELSE \*WAIT                               |
-| hclose()                                                                               |
-| time.sleep(1.0) \# DLY 1.0                                                             |
-| hopen()                                                                                |
-| counter += 1 \# COUNTER = COUNTER + 1                                                  |
-| print('COUNTER =', counter)                                                            |
-| time.sleep(0.5)                                                                        |
+```python
+# main.py -- ESP32 MicroPython: sequential control with sensor check
+# Simulates robot commands: M_IN (sensor read) / HCLOSE-HOPEN (gripper) / GOTO (loop)
+from machine import Pin, PWM
+import time
+
+sensor = Pin(4, Pin.IN)       # เทียบเท่า M_IN(1)
+gripper = PWM(Pin(18), freq=50)  # เทียบเท่า HCLOSE / HOPEN
+
+def set_gripper(angle):
+    duty = int(1638 + (angle / 180) * (8192 - 1638))
+    gripper.duty_u16(duty)
+
+def hopen():
+    set_gripper(90)   # gripper open
+    print('HOPEN 1  -- มือจับเปิด')
+
+def hclose():
+    set_gripper(0)    # gripper close
+    print('HCLOSE 1 -- มือจับปิด (ยึดชิ้นงาน)')
+
+counter = 0
+hopen()
+while True:
+    m_in1 = sensor.value()          # M_IN(1) : 0 หรือ 1 ตามชนิดโมดูล
+    print('M_IN(1) =', m_in1)
+    if m_in1 == 1:                  # IF M_IN(1) = 1 THEN *PICK ELSE *WAIT
+        hclose()
+        time.sleep(1.0)             # DLY 1.0
+        hopen()
+        counter += 1                # COUNTER = COUNTER + 1
+        print('COUNTER =', counter)
+    time.sleep(0.5)
+```
 
 1\. เปิดโปรแกรม Visual Studio Code เชื่อมต่อ ESP32 ผ่าน USB แล้วอัปโหลดไฟล์
 main.py ตามตารางที่ 3.2

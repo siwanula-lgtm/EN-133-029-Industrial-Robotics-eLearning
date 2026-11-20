@@ -171,36 +171,37 @@ Monitor (20 นาที)
 ตารางที่ 2.2 โค้ดภาษา
 MicroPython สำหรับการตรวจสอบจลนศาสตร์ตรงของแขนกล 2-DOF
 
-| \# main.py -- ESP32 MicroPython: 2-DOF planar arm forward kinematics demo               |
-|-----------------------------------------------------------------------------------------|
-| from machine import Pin, PWM                                                            |
-| import time, math                                                                       |
-|                                                                                         |
-| servo1 = PWM(Pin(18), freq=50) \# theta1 - base joint                                   |
-| servo2 = PWM(Pin(19), freq=50) \# theta2 - elbow joint                                  |
-|                                                                                         |
-| L1 = 15.0 \# cm                                                                         |
-| L2 = 15.0 \# cm                                                                         |
-|                                                                                         |
-| def set_angle(servo, angle):                                                            |
-| duty = int(1638 + (angle / 180) \* (8192 - 1638))                                       |
-| servo.duty_u16(duty)                                                                    |
-|                                                                                         |
-| def forward_kinematics(theta1_deg, theta2_deg):                                         |
-| t1 = math.radians(theta1_deg)                                                           |
-| t2 = math.radians(theta2_deg)                                                           |
-| x = L1 \* math.cos(t1) + L2 \* math.cos(t1 + t2)                                        |
-| y = L1 \* math.sin(t1) + L2 \* math.sin(t1 + t2)                                        |
-| return x, y                                                                             |
-|                                                                                         |
-| test_angles = \[(0, 90), (30, 60), (45, 45), (60, 30), (90, 0)\]                        |
-| while True:                                                                             |
-| for th1, th2 in test_angles:                                                            |
-| set_angle(servo1, th1)                                                                  |
-| set_angle(servo2, th2)                                                                  |
-| x, y = forward_kinematics(th1, th2)                                                     |
-| print('theta1=', th1, 'theta2=', th2, ' -\> predicted (x,y) =', round(x,2), round(y,2)) |
-| time.sleep(2.0)                                                                         |
+```python
+# main.py -- ESP32 MicroPython: 2-DOF planar arm forward kinematics demo
+from machine import Pin, PWM
+import time, math
+
+servo1 = PWM(Pin(18), freq=50)   # theta1 - base joint
+servo2 = PWM(Pin(19), freq=50)   # theta2 - elbow joint
+
+L1 = 15.0   # cm
+L2 = 15.0   # cm
+
+def set_angle(servo, angle):
+    duty = int(1638 + (angle / 180) * (8192 - 1638))
+    servo.duty_u16(duty)
+
+def forward_kinematics(theta1_deg, theta2_deg):
+    t1 = math.radians(theta1_deg)
+    t2 = math.radians(theta2_deg)
+    x = L1 * math.cos(t1) + L2 * math.cos(t1 + t2)
+    y = L1 * math.sin(t1) + L2 * math.sin(t1 + t2)
+    return x, y
+
+test_angles = [(0, 90), (30, 60), (45, 45), (60, 30), (90, 0)]
+while True:
+    for th1, th2 in test_angles:
+        set_angle(servo1, th1)
+        set_angle(servo2, th2)
+        x, y = forward_kinematics(th1, th2)
+        print('theta1=', th1, 'theta2=', th2, ' -> predicted (x,y) =', round(x,2), round(y,2))
+        time.sleep(2.0)
+```
 
 1\. เปิดโปรแกรม Visual Studio Code เชื่อมต่อ ESP32 ผ่าน USB แล้วอัปโหลดไฟล์
 main.py ตามตารางที่ 2.2

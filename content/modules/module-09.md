@@ -224,102 +224,103 @@ GND แสดงสถานะของกระบวนการ
 ตารางที่ 9.3 โค้ดภาษา
 MicroPython สำหรับมินิโครงงานหุ่นยนต์หยิบจับชิ้นงานควบคุมกระบวนการผลิต
 
-| \# main.py -- ESP32 MicroPython: Mini pick-and-place project (course integration capstone)                 |
-|------------------------------------------------------------------------------------------------------------|
-| from machine import Pin, PWM                                                                               |
-| import time                                                                                                |
-|                                                                                                            |
-| part_sensor = Pin(4, Pin.IN, Pin.PULL_UP) \# จำลองเซนเซอร์ตรวจจับชิ้นงานที่สถานีหยิบ (กด = LOW = มีชิ้นงาน)           |
-| estop_btn = Pin(5, Pin.IN, Pin.PULL_UP) \# ปุ่มหยุดฉุกเฉิน                                                      |
-| reset_btn = Pin(19, Pin.IN, Pin.PULL_UP) \# ปุ่มรีเซ็ตกลับสู่ Home/Idle                                           |
-| status_led = Pin(2, Pin.OUT) \# LED แสดงสถานะกระบวนการ                                                     |
-| arm_servo = PWM(Pin(18), freq=50) \# จำลองแขนหยิบจับของหุ่นยนต์                                                 |
-|                                                                                                            |
-| HOME_ANGLE = 0                                                                                             |
-| PICK_ANGLE = 60                                                                                            |
-| PLACE_ANGLE = 150                                                                                          |
-| angle = HOME_ANGLE                                                                                         |
-|                                                                                                            |
-| def set_servo_angle(deg):                                                                                  |
-| pulse_us = 500 + (deg / 180.0) \* 2000                                                                     |
-| duty = int(pulse_us / 20000 \* 65535)                                                                      |
-| arm_servo.duty_u16(duty)                                                                                   |
-|                                                                                                            |
-| def move_to(target, step=3, hold=0.03):                                                                    |
-| \# เคลื่อนที่ทีละขั้นเพื่อตรวจสอบสัญญาณ E-Stop ระหว่างทางได้เสมอ (จำลองข้อกำหนดความปลอดภัยของหุ่นยนต์จริง)                   |
-| global angle                                                                                               |
-| direction = 1 if target \> angle else -1                                                                   |
-| while angle != target:                                                                                     |
-| if estop_btn.value() == 0:                                                                                 |
-| return False                                                                                               |
-| angle += direction \* step                                                                                 |
-| if (direction == 1 and angle \> target) or (direction == -1 and angle \< target):                          |
-| angle = target                                                                                             |
-| set_servo_angle(angle)                                                                                     |
-| time.sleep(hold)                                                                                           |
-| return True                                                                                                |
-|                                                                                                            |
-| set_servo_angle(angle)                                                                                     |
-| state = 'IDLE'                                                                                             |
-| estopped = False                                                                                           |
-| cycle_count = 0                                                                                            |
-| total_cycle_ms = 0                                                                                         |
-| cycle_start = 0                                                                                            |
-| grip_t = rel_t = 0                                                                                         |
-|                                                                                                            |
-| print('=== พร้อมทำงาน: รอชิ้นงานที่สถานีหยิบ (Idle) ===')                                                         |
-| status_led.value(1)                                                                                        |
-|                                                                                                            |
-| while True:                                                                                                |
-| if estop_btn.value() == 0 and not estopped:                                                                |
-| estopped = True                                                                                            |
-| status_led.value(0)                                                                                        |
-| print('!!! E-Stop ถูกกด -\> หยุดกระบวนการทันทีที่มุม {} องศา !!!'.format(angle))                                  |
-|                                                                                                            |
-| if estopped:                                                                                               |
-| if estop_btn.value() == 1 and reset_btn.value() == 0:                                                      |
-| estopped = False                                                                                           |
-| state = 'IDLE'                                                                                             |
-| move_to(HOME_ANGLE)                                                                                        |
-| status_led.value(1)                                                                                        |
-| print('\>\>\> รีเซ็ตสำเร็จ: กลับสู่ตำแหน่ง Home และสถานะ Idle \>\>\>')                                            |
-| time.sleep(0.05)                                                                                           |
-| continue                                                                                                   |
-|                                                                                                            |
-| if state == 'IDLE':                                                                                        |
-| if part_sensor.value() == 0:                                                                               |
-| state = 'MOVE_TO_PICK'                                                                                     |
-| cycle_start = time.ticks_ms()                                                                              |
-| print('--- ตรวจพบชิ้นงาน: เริ่มรอบการทำงาน ---')                                                               |
-|                                                                                                            |
-| elif state == 'MOVE_TO_PICK':                                                                              |
-| if move_to(PICK_ANGLE):                                                                                    |
-| state = 'GRIP'; grip_t = time.ticks_ms()                                                                   |
-|                                                                                                            |
-| elif state == 'GRIP':                                                                                      |
-| if time.ticks_diff(time.ticks_ms(), grip_t) \> 300:                                                        |
-| print(' หยิบชิ้นงานแล้ว')                                                                                      |
-| state = 'MOVE_TO_PLACE'                                                                                    |
-|                                                                                                            |
-| elif state == 'MOVE_TO_PLACE':                                                                             |
-| if move_to(PLACE_ANGLE):                                                                                   |
-| state = 'RELEASE'; rel_t = time.ticks_ms()                                                                 |
-|                                                                                                            |
-| elif state == 'RELEASE':                                                                                   |
-| if time.ticks_diff(time.ticks_ms(), rel_t) \> 300:                                                         |
-| print(' วางชิ้นงานแล้ว')                                                                                      |
-| state = 'RETURN_HOME'                                                                                      |
-|                                                                                                            |
-| elif state == 'RETURN_HOME':                                                                               |
-| if move_to(HOME_ANGLE):                                                                                    |
-| cycle_ms = time.ticks_diff(time.ticks_ms(), cycle_start)                                                   |
-| cycle_count += 1                                                                                           |
-| total_cycle_ms += cycle_ms                                                                                 |
-| avg_ms = total_cycle_ms / cycle_count                                                                      |
-| print('=== รอบที่ {} เสร็จสิ้น: Cycle Time = {} ms (เฉลี่ย {:.0f} ms) ==='.format(cycle_count, cycle_ms, avg_ms)) |
-| state = 'IDLE'                                                                                             |
-|                                                                                                            |
-| time.sleep(0.02)                                                                                           |
+```python
+# main.py -- ESP32 MicroPython: Mini pick-and-place project (course integration capstone)
+from machine import Pin, PWM
+import time
+
+part_sensor = Pin(4, Pin.IN, Pin.PULL_UP)   # จำลองเซนเซอร์ตรวจจับชิ้นงานที่สถานีหยิบ (กด = LOW = มีชิ้นงาน)
+estop_btn = Pin(5, Pin.IN, Pin.PULL_UP)     # ปุ่มหยุดฉุกเฉิน
+reset_btn = Pin(19, Pin.IN, Pin.PULL_UP)    # ปุ่มรีเซ็ตกลับสู่ Home/Idle
+status_led = Pin(2, Pin.OUT)                # LED แสดงสถานะกระบวนการ
+arm_servo = PWM(Pin(18), freq=50)           # จำลองแขนหยิบจับของหุ่นยนต์
+
+HOME_ANGLE = 0
+PICK_ANGLE = 60
+PLACE_ANGLE = 150
+angle = HOME_ANGLE
+
+def set_servo_angle(deg):
+    pulse_us = 500 + (deg / 180.0) * 2000
+    duty = int(pulse_us / 20000 * 65535)
+    arm_servo.duty_u16(duty)
+
+def move_to(target, step=3, hold=0.03):
+    # เคลื่อนที่ทีละขั้นเพื่อตรวจสอบสัญญาณ E-Stop ระหว่างทางได้เสมอ (จำลองข้อกำหนดความปลอดภัยของหุ่นยนต์จริง)
+    global angle
+    direction = 1 if target > angle else -1
+    while angle != target:
+        if estop_btn.value() == 0:
+            return False
+        angle += direction * step
+        if (direction == 1 and angle > target) or (direction == -1 and angle < target):
+            angle = target
+        set_servo_angle(angle)
+        time.sleep(hold)
+    return True
+
+set_servo_angle(angle)
+state = 'IDLE'
+estopped = False
+cycle_count = 0
+total_cycle_ms = 0
+cycle_start = 0
+grip_t = rel_t = 0
+
+print('=== พร้อมทำงาน: รอชิ้นงานที่สถานีหยิบ (Idle) ===')
+status_led.value(1)
+
+while True:
+    if estop_btn.value() == 0 and not estopped:
+        estopped = True
+        status_led.value(0)
+        print('!!! E-Stop ถูกกด -> หยุดกระบวนการทันทีที่มุม {} องศา !!!'.format(angle))
+
+    if estopped:
+        if estop_btn.value() == 1 and reset_btn.value() == 0:
+            estopped = False
+            state = 'IDLE'
+            move_to(HOME_ANGLE)
+            status_led.value(1)
+            print('>>> รีเซ็ตสำเร็จ: กลับสู่ตำแหน่ง Home และสถานะ Idle >>>')
+        time.sleep(0.05)
+        continue
+
+    if state == 'IDLE':
+        if part_sensor.value() == 0:
+            state = 'MOVE_TO_PICK'
+            cycle_start = time.ticks_ms()
+            print('--- ตรวจพบชิ้นงาน: เริ่มรอบการทำงาน ---')
+
+    elif state == 'MOVE_TO_PICK':
+        if move_to(PICK_ANGLE):
+            state = 'GRIP'; grip_t = time.ticks_ms()
+
+    elif state == 'GRIP':
+        if time.ticks_diff(time.ticks_ms(), grip_t) > 300:
+            print('    หยิบชิ้นงานแล้ว')
+            state = 'MOVE_TO_PLACE'
+
+    elif state == 'MOVE_TO_PLACE':
+        if move_to(PLACE_ANGLE):
+            state = 'RELEASE'; rel_t = time.ticks_ms()
+
+    elif state == 'RELEASE':
+        if time.ticks_diff(time.ticks_ms(), rel_t) > 300:
+            print('    วางชิ้นงานแล้ว')
+            state = 'RETURN_HOME'
+
+    elif state == 'RETURN_HOME':
+        if move_to(HOME_ANGLE):
+            cycle_ms = time.ticks_diff(time.ticks_ms(), cycle_start)
+            cycle_count += 1
+            total_cycle_ms += cycle_ms
+            avg_ms = total_cycle_ms / cycle_count
+            print('=== รอบที่ {} เสร็จสิ้น: Cycle Time = {} ms (เฉลี่ย {:.0f} ms) ==='.format(cycle_count, cycle_ms, avg_ms))
+            state = 'IDLE'
+
+    time.sleep(0.02)
+```
 
 1\. อัปโหลดโค้ดไปยังบอร์ด ESP32 แล้วเปิดหน้าต่าง Serial Monitor
 สังเกตข้อความแจ้งสถานะพร้อมทำงาน (Idle) และ LED ติดสว่าง

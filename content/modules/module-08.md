@@ -148,96 +148,97 @@ LED, เซอร์โว และโพเทนชิโอมิเตอ�
 ตารางที่ 8.2 โค้ดภาษา
 MicroPython สำหรับการจำลองการวินิจฉัยข้อผิดพลาดและรหัส Alarm/Error
 
-| \# main.py -- ESP32 MicroPython: Robot fault-diagnosis + preventive-maintenance alert simulation                        |
-|-------------------------------------------------------------------------------------------------------------------------|
-| from machine import Pin, PWM, ADC                                                                                       |
-| import time                                                                                                             |
-|                                                                                                                         |
-| fault_btn = Pin(4, Pin.IN, Pin.PULL_UP) \# จำลองปุ่ม Fault-Inject (กด = LOW = จำลอง Error Servo)                          |
-| reset_btn = Pin(5, Pin.IN, Pin.PULL_UP) \# ปุ่มรีเซ็ตกลับสู่การทำงานปกติ                                                        |
-| status_led = Pin(2, Pin.OUT) \# LED แสดงสถานะ/กะพริบตามรหัส Error                                                         |
-| arm_servo = PWM(Pin(18), freq=50) \# จำลองข้อต่อหุ่นยนต์ (ตำแหน่งคำสั่ง)                                                        |
-| pos_feedback = ADC(Pin(34)) \# โพเทนชิโอมิเตอร์ จำลองค่า Position Feedback                                                  |
-| pos_feedback.atten(ADC.ATTN_11DB)                                                                                       |
-|                                                                                                                         |
-| DEV_TOLERANCE = 25 \# องศา: ความเบี่ยงเบนสูงสุดที่ยอมรับได้ระหว่างตำแหน่งคำสั่งกับ Feedback                                          |
-| PM_THRESHOLD = 5 \# จำนวนรอบการทำงานก่อนแจ้งเตือนบำรุงรักษาเชิงป้องกัน (ย่อรอบสำหรับสาธิตในห้องเรียน)                                |
-|                                                                                                                         |
-| ERROR_CODES = {                                                                                                         |
-| 'ERR-102': ('Position Deviation', 2), \# (ชื่อ, จำนวนครั้งที่ LED กะพริบ)                                                      |
-| 'ERR-201': ('Servo Overload (จำลอง)', 3),                                                                               |
-| }                                                                                                                       |
-|                                                                                                                         |
-| def set_servo_angle(deg):                                                                                               |
-| pulse_us = 500 + (deg / 180.0) \* 2000                                                                                  |
-| duty = int(pulse_us / 20000 \* 65535)                                                                                   |
-| arm_servo.duty_u16(duty)                                                                                                |
-|                                                                                                                         |
-| def read_feedback_angle():                                                                                              |
-| raw = pos_feedback.read_u16() \# ช่วงค่า 0-65535                                                                          |
-| return raw \* 180 / 65535 \# แปลงเป็นมุมองศา 0-180                                                                        |
-|                                                                                                                         |
-| def blink_error(times):                                                                                                 |
-| for \_ in range(times):                                                                                                 |
-| status_led.value(1); time.sleep(0.15)                                                                                   |
-| status_led.value(0); time.sleep(0.15)                                                                                   |
-| time.sleep(0.5)                                                                                                         |
-|                                                                                                                         |
-| fault_latched = False                                                                                                   |
-| active_code = None                                                                                                      |
-| cycle_count = 0                                                                                                         |
-| pm_notified = False                                                                                                     |
-| angle = 0                                                                                                               |
-| direction = 1                                                                                                           |
-| dev_count = 0                                                                                                           |
-|                                                                                                                         |
-| print('=== เริ่มทำงานปกติ: แขนกลจำลองเคลื่อนที่ต่อเนื่อง ===')                                                                    |
-| status_led.value(1)                                                                                                     |
-|                                                                                                                         |
-| while True:                                                                                                             |
-| if fault_btn.value() == 0 and not fault_latched:                                                                        |
-| \# ปุ่ม Fault-Inject จำลองข้อผิดพลาด Servo Overload ที่ควบคุมได้แน่นอนสำหรับการทดสอบซ้ำ                                            |
-| fault_latched = True                                                                                                    |
-| active_code = 'ERR-201'                                                                                                 |
-| name, \_ = ERROR_CODES\[active_code\]                                                                                   |
-| print('!!! {} ตรวจพบ: {} -\> หยุดหุ่นยนต์ทันที !!!'.format(active_code, name))                                                |
-|                                                                                                                         |
-| fb_angle = read_feedback_angle()                                                                                        |
-| deviation = abs(fb_angle - angle)                                                                                       |
-| dev_count = dev_count + 1 if deviation \> DEV_TOLERANCE else 0                                                          |
-| if dev_count \>= 3 and not fault_latched:                                                                               |
-| fault_latched = True                                                                                                    |
-| active_code = 'ERR-102'                                                                                                 |
-| name, \_ = ERROR_CODES\[active_code\]                                                                                   |
-| print('!!! {} ตรวจพบ: {} (เบี่ยงเบน {:.0f} องศา) -\> หยุดหุ่นยนต์ทันที !!!'.format(active_code, name, deviation))               |
-|                                                                                                                         |
-| if fault_latched:                                                                                                       |
-| \_, blinks = ERROR_CODES\[active_code\]                                                                                 |
-| blink_error(blinks)                                                                                                     |
-| \# ต้องแก้ไขสาเหตุให้หมดไปก่อน "และ" กดปุ่ม Reset เท่านั้น จึงจะกลับมาทำงานได้ (ป้องกันรีสตาร์ทอัตโนมัติ)                                   |
-| cause_cleared = (fault_btn.value() == 1) and (deviation \<= DEV_TOLERANCE)                                              |
-| if cause_cleared and reset_btn.value() == 0:                                                                            |
-| fault_latched = False                                                                                                   |
-| active_code = None                                                                                                      |
-| dev_count = 0                                                                                                           |
-| status_led.value(1)                                                                                                     |
-| print('\>\>\> รีเซ็ตสำเร็จ: กลับสู่การทำงานปกติ \>\>\>')                                                                       |
-| continue                                                                                                                |
-|                                                                                                                         |
-| \# ทำงานปกติ: แกว่งเซอร์โวไปมาต่อเนื่องจำลองการเคลื่อนที่ของแขนกล                                                                 |
-| angle += direction \* 3                                                                                                 |
-| if angle \>= 180:                                                                                                       |
-| angle = 180; direction = -1                                                                                             |
-| cycle_count += 1                                                                                                        |
-| elif angle \<= 0:                                                                                                       |
-| angle = 0; direction = 1                                                                                                |
-| set_servo_angle(angle)                                                                                                  |
-|                                                                                                                         |
-| if cycle_count \>= PM_THRESHOLD and not pm_notified:                                                                    |
-| pm_notified = True                                                                                                      |
-| print('\*\*\* แจ้งเตือนบำรุงรักษาเชิงป้องกัน (PM Due): ทำงานครบ {} รอบแล้ว ควรตรวจสอบตามตารางที่ 8.2 \*\*\*'.format(cycle_count)) |
-|                                                                                                                         |
-| time.sleep(0.03)                                                                                                        |
+```python
+# main.py -- ESP32 MicroPython: Robot fault-diagnosis + preventive-maintenance alert simulation
+from machine import Pin, PWM, ADC
+import time
+
+fault_btn = Pin(4, Pin.IN, Pin.PULL_UP)     # จำลองปุ่ม Fault-Inject (กด = LOW = จำลอง Error Servo)
+reset_btn = Pin(5, Pin.IN, Pin.PULL_UP)     # ปุ่มรีเซ็ตกลับสู่การทำงานปกติ
+status_led = Pin(2, Pin.OUT)                # LED แสดงสถานะ/กะพริบตามรหัส Error
+arm_servo = PWM(Pin(18), freq=50)           # จำลองข้อต่อหุ่นยนต์ (ตำแหน่งคำสั่ง)
+pos_feedback = ADC(Pin(34))                 # โพเทนชิโอมิเตอร์ จำลองค่า Position Feedback
+pos_feedback.atten(ADC.ATTN_11DB)
+
+DEV_TOLERANCE = 25      # องศา: ความเบี่ยงเบนสูงสุดที่ยอมรับได้ระหว่างตำแหน่งคำสั่งกับ Feedback
+PM_THRESHOLD = 5        # จำนวนรอบการทำงานก่อนแจ้งเตือนบำรุงรักษาเชิงป้องกัน (ย่อรอบสำหรับสาธิตในห้องเรียน)
+
+ERROR_CODES = {
+    'ERR-102': ('Position Deviation', 2),   # (ชื่อ, จำนวนครั้งที่ LED กะพริบ)
+    'ERR-201': ('Servo Overload (จำลอง)', 3),
+}
+
+def set_servo_angle(deg):
+    pulse_us = 500 + (deg / 180.0) * 2000
+    duty = int(pulse_us / 20000 * 65535)
+    arm_servo.duty_u16(duty)
+
+def read_feedback_angle():
+    raw = pos_feedback.read_u16()           # ช่วงค่า 0-65535
+    return raw * 180 / 65535                # แปลงเป็นมุมองศา 0-180
+
+def blink_error(times):
+    for _ in range(times):
+        status_led.value(1); time.sleep(0.15)
+        status_led.value(0); time.sleep(0.15)
+    time.sleep(0.5)
+
+fault_latched = False
+active_code = None
+cycle_count = 0
+pm_notified = False
+angle = 0
+direction = 1
+dev_count = 0
+
+print('=== เริ่มทำงานปกติ: แขนกลจำลองเคลื่อนที่ต่อเนื่อง ===')
+status_led.value(1)
+
+while True:
+    if fault_btn.value() == 0 and not fault_latched:
+        # ปุ่ม Fault-Inject จำลองข้อผิดพลาด Servo Overload ที่ควบคุมได้แน่นอนสำหรับการทดสอบซ้ำ
+        fault_latched = True
+        active_code = 'ERR-201'
+        name, _ = ERROR_CODES[active_code]
+        print('!!! {} ตรวจพบ: {} -> หยุดหุ่นยนต์ทันที !!!'.format(active_code, name))
+
+    fb_angle = read_feedback_angle()
+    deviation = abs(fb_angle - angle)
+    dev_count = dev_count + 1 if deviation > DEV_TOLERANCE else 0
+    if dev_count >= 3 and not fault_latched:
+        fault_latched = True
+        active_code = 'ERR-102'
+        name, _ = ERROR_CODES[active_code]
+        print('!!! {} ตรวจพบ: {} (เบี่ยงเบน {:.0f} องศา) -> หยุดหุ่นยนต์ทันที !!!'.format(active_code, name, deviation))
+
+    if fault_latched:
+        _, blinks = ERROR_CODES[active_code]
+        blink_error(blinks)
+        # ต้องแก้ไขสาเหตุให้หมดไปก่อน "และ" กดปุ่ม Reset เท่านั้น จึงจะกลับมาทำงานได้ (ป้องกันรีสตาร์ทอัตโนมัติ)
+        cause_cleared = (fault_btn.value() == 1) and (deviation <= DEV_TOLERANCE)
+        if cause_cleared and reset_btn.value() == 0:
+            fault_latched = False
+            active_code = None
+            dev_count = 0
+            status_led.value(1)
+            print('>>> รีเซ็ตสำเร็จ: กลับสู่การทำงานปกติ >>>')
+        continue
+
+    # ทำงานปกติ: แกว่งเซอร์โวไปมาต่อเนื่องจำลองการเคลื่อนที่ของแขนกล
+    angle += direction * 3
+    if angle >= 180:
+        angle = 180; direction = -1
+        cycle_count += 1
+    elif angle <= 0:
+        angle = 0; direction = 1
+    set_servo_angle(angle)
+
+    if cycle_count >= PM_THRESHOLD and not pm_notified:
+        pm_notified = True
+        print('*** แจ้งเตือนบำรุงรักษาเชิงป้องกัน (PM Due): ทำงานครบ {} รอบแล้ว ควรตรวจสอบตามตารางที่ 8.2 ***'.format(cycle_count))
+
+    time.sleep(0.03)
+```
 
 1\. อัปโหลดโค้ดไปยังบอร์ด ESP32 แล้วเปิดหน้าต่าง Serial Monitor
 สังเกตว่าเซอร์โวเคลื่อนที่แกว่งไปมาต่อเนื่องและ LED ติดสว่าง (ทำงานปกติ)

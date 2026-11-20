@@ -138,74 +138,75 @@ Pull-down ในโปรแกรม เพื่อให้ค่าอ่า
 ตารางที่ 6.2 โค้ดภาษา
 MicroPython สำหรับการจำลองสัญญาณ Handshaking ระหว่างหุ่นยนต์กับระบบอัตโนมัติ
 
-| \# main.py -- ESP32 MicroPython: Robot-automation handshaking simulation                                   |
-|------------------------------------------------------------------------------------------------------------|
-| from machine import Pin, PWM                                                                               |
-| import time                                                                                                |
-|                                                                                                            |
-| part_ready_btn = Pin(4, Pin.IN, Pin.PULL_DOWN) \# จำลองสัญญาณ Part Ready จาก PLC/เซนเซอร์                    |
-| busy_led = Pin(2, Pin.OUT) \# จำลองสัญญาณสถานะ Robot Busy / Cycle Done                                      |
-| gripper_servo = PWM(Pin(18), freq=50) \# จำลองชุดจับยึด (Gripper) ด้วยเซอร์โวมอเตอร์                             |
-|                                                                                                            |
-| HOME_DEG = 0.0 \# ตำแหน่งพัก (รอรับชิ้นงาน)                                                                     |
-| PICK_DEG = 90.0 \# ตำแหน่งหยิบชิ้นงาน                                                                          |
-| PLACE_DEG = 180.0 \# ตำแหน่งวางชิ้นงาน                                                                        |
-|                                                                                                            |
-| def set_servo_angle(deg):                                                                                  |
-| pulse_us = 500 + (deg / 180.0) \* 2000 \# 500-2500 us ครอบคลุม 0-180 องศา                                   |
-| duty = int(pulse_us / 20000 \* 65535) \# คาบสัญญาณ 20 ms (50 Hz)                                            |
-| gripper_servo.duty_u16(duty)                                                                               |
-|                                                                                                            |
-| def wait_part_ready():                                                                                     |
-| \# รอสัญญาณ M_IN(Part Ready)=1 พร้อมหน่วงเวลากันสัญญาณกระเพื่อม (Debounce)                                        |
-| while part_ready_btn.value() == 0:                                                                         |
-| time.sleep(0.02)                                                                                           |
-| time.sleep(0.05)                                                                                           |
-| return part_ready_btn.value() == 1                                                                         |
-|                                                                                                            |
-| def pulse_cycle_done():                                                                                    |
-| \# จำลอง M_OUT(Done) เป็นสัญญาณพัลส์สั้น ๆ                                                                       |
-| busy_led.value(0)                                                                                          |
-| time.sleep(0.1)                                                                                            |
-| busy_led.value(1)                                                                                          |
-| time.sleep(0.15)                                                                                           |
-| busy_led.value(0)                                                                                          |
-|                                                                                                            |
-| set_servo_angle(HOME_DEG)                                                                                  |
-| counter = 0                                                                                                |
-| print('=== พร้อมรับสัญญาณ Part Ready (กดปุ่มเพื่อจำลองชิ้นงานมาถึง) ===')                                            |
-|                                                                                                            |
-| while True:                                                                                                |
-| if wait_part_ready():                                                                                      |
-| t_start = time.ticks_ms()                                                                                  |
-|                                                                                                            |
-| \# M_OUT(Busy) = 1 : แจ้งว่าหุ่นยนต์เริ่มปฏิบัติงาน ห้ามส่งชิ้นงานใหม่ซ้อน                                                 |
-| busy_led.value(1)                                                                                          |
-| print('รับสัญญาณ Part Ready แล้ว -\> เริ่มลำดับหยิบวาง (รอบที่ {})'.format(counter + 1))                            |
-|                                                                                                            |
-| \# MOV/MVS ไปตำแหน่งหยิบ แล้ว HCLOSE ปิดชุดจับยึด                                                                 |
-| set_servo_angle(PICK_DEG)                                                                                  |
-| time.sleep(0.6)                                                                                            |
-| print(' - เคลื่อนที่ถึงตำแหน่งหยิบ และปิดชุดจับยึด (HCLOSE)')                                                         |
-|                                                                                                            |
-| \# DEF PLT / Counter คำนวณตำแหน่งวาง แล้ว MVS ไปยังตำแหน่งวาง                                                  |
-| set_servo_angle(PLACE_DEG)                                                                                 |
-| time.sleep(0.6)                                                                                            |
-| print(' - เคลื่อนที่ถึงตำแหน่งวางที่คำนวณจาก DEF PLT/Counter')                                                     |
-|                                                                                                            |
-| \# HOPEN ปล่อยชิ้นงาน แล้วเคลื่อนที่กลับตำแหน่งพัก                                                                    |
-| set_servo_angle(HOME_DEG)                                                                                  |
-| time.sleep(0.6)                                                                                            |
-| print(' - ปล่อยชิ้นงาน (HOPEN) และกลับสู่ตำแหน่งพัก')                                                              |
-|                                                                                                            |
-| \# M_OUT(Done) : ส่งสัญญาณ Cycle Done เป็นพัลส์ แล้วลด Busy ลงเป็น 0                                              |
-| pulse_cycle_done()                                                                                         |
-| counter += 1                                                                                               |
-|                                                                                                            |
-| cycle_time = time.ticks_diff(time.ticks_ms(), t_start) / 1000.0                                            |
-| print(' - Cycle Done: รอบที่ {} เวลาที่ใช้ {:.2f} วินาที (รวมทั้งหมด {} รอบ)'.format(counter, cycle_time, counter)) |
-|                                                                                                            |
-| time.sleep(0.05)                                                                                           |
+```python
+# main.py -- ESP32 MicroPython: Robot-automation handshaking simulation
+from machine import Pin, PWM
+import time
+
+part_ready_btn = Pin(4, Pin.IN, Pin.PULL_DOWN)   # จำลองสัญญาณ Part Ready จาก PLC/เซนเซอร์
+busy_led = Pin(2, Pin.OUT)                       # จำลองสัญญาณสถานะ Robot Busy / Cycle Done
+gripper_servo = PWM(Pin(18), freq=50)            # จำลองชุดจับยึด (Gripper) ด้วยเซอร์โวมอเตอร์
+
+HOME_DEG = 0.0     # ตำแหน่งพัก (รอรับชิ้นงาน)
+PICK_DEG = 90.0    # ตำแหน่งหยิบชิ้นงาน
+PLACE_DEG = 180.0  # ตำแหน่งวางชิ้นงาน
+
+def set_servo_angle(deg):
+    pulse_us = 500 + (deg / 180.0) * 2000        # 500-2500 us ครอบคลุม 0-180 องศา
+    duty = int(pulse_us / 20000 * 65535)         # คาบสัญญาณ 20 ms (50 Hz)
+    gripper_servo.duty_u16(duty)
+
+def wait_part_ready():
+    # รอสัญญาณ M_IN(Part Ready)=1 พร้อมหน่วงเวลากันสัญญาณกระเพื่อม (Debounce)
+    while part_ready_btn.value() == 0:
+        time.sleep(0.02)
+    time.sleep(0.05)
+    return part_ready_btn.value() == 1
+
+def pulse_cycle_done():
+    # จำลอง M_OUT(Done) เป็นสัญญาณพัลส์สั้น ๆ
+    busy_led.value(0)
+    time.sleep(0.1)
+    busy_led.value(1)
+    time.sleep(0.15)
+    busy_led.value(0)
+
+set_servo_angle(HOME_DEG)
+counter = 0
+print('=== พร้อมรับสัญญาณ Part Ready (กดปุ่มเพื่อจำลองชิ้นงานมาถึง) ===')
+
+while True:
+    if wait_part_ready():
+        t_start = time.ticks_ms()
+
+        # M_OUT(Busy) = 1 : แจ้งว่าหุ่นยนต์เริ่มปฏิบัติงาน ห้ามส่งชิ้นงานใหม่ซ้อน
+        busy_led.value(1)
+        print('รับสัญญาณ Part Ready แล้ว -> เริ่มลำดับหยิบวาง (รอบที่ {})'.format(counter + 1))
+
+        # MOV/MVS ไปตำแหน่งหยิบ แล้ว HCLOSE ปิดชุดจับยึด
+        set_servo_angle(PICK_DEG)
+        time.sleep(0.6)
+        print('  - เคลื่อนที่ถึงตำแหน่งหยิบ และปิดชุดจับยึด (HCLOSE)')
+
+        # DEF PLT / Counter คำนวณตำแหน่งวาง แล้ว MVS ไปยังตำแหน่งวาง
+        set_servo_angle(PLACE_DEG)
+        time.sleep(0.6)
+        print('  - เคลื่อนที่ถึงตำแหน่งวางที่คำนวณจาก DEF PLT/Counter')
+
+        # HOPEN ปล่อยชิ้นงาน แล้วเคลื่อนที่กลับตำแหน่งพัก
+        set_servo_angle(HOME_DEG)
+        time.sleep(0.6)
+        print('  - ปล่อยชิ้นงาน (HOPEN) และกลับสู่ตำแหน่งพัก')
+
+        # M_OUT(Done) : ส่งสัญญาณ Cycle Done เป็นพัลส์ แล้วลด Busy ลงเป็น 0
+        pulse_cycle_done()
+        counter += 1
+
+        cycle_time = time.ticks_diff(time.ticks_ms(), t_start) / 1000.0
+        print('  - Cycle Done: รอบที่ {}  เวลาที่ใช้ {:.2f} วินาที (รวมทั้งหมด {} รอบ)'.format(counter, cycle_time, counter))
+
+    time.sleep(0.05)
+```
 
 1\. อัปโหลดโค้ดไปยังบอร์ด ESP32 แล้วเปิดหน้าต่าง Serial Monitor
 เพื่อสังเกตข้อความแสดงลำดับการทำงาน

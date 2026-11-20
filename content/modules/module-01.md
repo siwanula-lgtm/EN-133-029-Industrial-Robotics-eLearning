@@ -251,24 +251,25 @@ ESP32
 ตารางที่ 1.2 โค้ดภาษา
 MicroPython สำหรับควบคุมมุมหมุนของมอเตอร์เซอร์โวด้วย ESP32
 
-| \# main.py -- ESP32 MicroPython: Servo joint angle sweep demo            |
-|--------------------------------------------------------------------------|
-| from machine import Pin, PWM                                             |
-| import time                                                              |
-|                                                                          |
-| servo = PWM(Pin(18), freq=50)                                            |
-|                                                                          |
-| def set_angle(angle):                                                    |
-| \# map 0-180 deg to duty range (approx 40-115 for 50Hz, 16-bit duty_u16) |
-| duty = int(1638 + (angle / 180) \* (8192 - 1638))                        |
-| servo.duty_u16(duty)                                                     |
-|                                                                          |
-| angles = \[0, 45, 90, 135, 180, 90, 0\]                                  |
-| while True:                                                              |
-| for a in angles:                                                         |
-| set_angle(a)                                                             |
-| print('Joint angle (theta):', a, 'deg')                                  |
-| time.sleep(1.5)                                                          |
+```python
+# main.py -- ESP32 MicroPython: Servo joint angle sweep demo
+from machine import Pin, PWM
+import time
+
+servo = PWM(Pin(18), freq=50)
+
+def set_angle(angle):
+    # map 0-180 deg to duty range (approx 40-115 for 50Hz, 16-bit duty_u16)
+    duty = int(1638 + (angle / 180) * (8192 - 1638))
+    servo.duty_u16(duty)
+
+angles = [0, 45, 90, 135, 180, 90, 0]
+while True:
+    for a in angles:
+        set_angle(a)
+        print('Joint angle (theta):', a, 'deg')
+        time.sleep(1.5)
+```
 
 ให้วิเคราะห์เปรียบเทียบค่ามุมที่โปรแกรมสั่งกับค่ามุมที่วัดได้จริง
 พร้อมอธิบายว่าความคลาดเคลื่อนที่พบ (ถ้ามี) สัมพันธ์กับความแม่นยำ (Accuracy)

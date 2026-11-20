@@ -214,76 +214,77 @@ Monitor (20 นาที)
 ตารางที่ 5.4 โค้ดภาษา
 MicroPython สำหรับการควบคุมตำแหน่งข้อต่อด้วย PID
 
-| \# main.py -- ESP32 MicroPython: PID position control demo (robot joint)                               |
-|--------------------------------------------------------------------------------------------------------|
-| from machine import Pin, ADC, PWM                                                                      |
-| import time                                                                                            |
-|                                                                                                        |
-| servo = PWM(Pin(18), freq=50) \# เซอร์โวหมุนต่อเนื่อง (สัญญาณ 1.0-2.0 ms)                                    |
-| pot = ADC(Pin(34)) \# โพเทนชิโอมิเตอร์ป้อนกลับตำแหน่ง                                                        |
-| pot.atten(ADC.ATTN_11DB)                                                                               |
-|                                                                                                        |
-| \# ---- ปรับค่าเกนตรงนี้เพื่อเปรียบเทียบ P / PI / PID ----                                                     |
-| KP = 1.2                                                                                               |
-| KI = 0.4 \# ตั้งเป็น 0 เพื่อทดสอบแบบ P อย่างเดียว                                                             |
-| KD = 0.05 \# ตั้งเป็น 0 เพื่อทดสอบแบบ PI                                                                    |
-| TARGET_DEG = 90.0                                                                                      |
-|                                                                                                        |
-| integral = 0.0                                                                                         |
-| last_error = 0.0                                                                                       |
-| last_measure = None                                                                                    |
-| OUT_MIN, OUT_MAX = -1.0, 1.0                                                                           |
-|                                                                                                        |
-| def read_angle_deg():                                                                                  |
-| raw = pot.read() \# 0-4095                                                                             |
-| return raw \* 270.0 / 4095.0 \# โพเทนชิโอมิเตอร์แบบหมุน 270 องศา                                           |
-|                                                                                                        |
-| def set_servo_speed(u):                                                                                |
-| \# u อยู่ในช่วง -1.0 (หมุนกลับสุด) ถึง +1.0 (หมุนไปสุด), 0 = หยุดนิ่ง                                              |
-| u = max(OUT_MIN, min(OUT_MAX, u))                                                                      |
-| pulse_us = 1500 + u \* 500 \# 1000-2000 us รอบจุดกึ่งกลาง 1500 us                                         |
-| duty = int(pulse_us / 20000 \* 65535) \# คาบสัญญาณ 20 ms (50 Hz)                                        |
-| servo.duty_u16(duty)                                                                                   |
-|                                                                                                        |
-| def pid_compute(measure, dt):                                                                          |
-| global integral, last_error, last_measure                                                              |
-| error = TARGET_DEG - measure                                                                           |
-| p_term = KP \* error                                                                                   |
-|                                                                                                        |
-| integral_candidate = integral + KI \* error \* dt                                                      |
-| raw_output_check = p_term + integral_candidate                                                         |
-| \# Anti-Windup แบบ Clamping: หยุดสะสม I เมื่อเอาต์พุตชนขอบและ error ยังผลักไปทางเดิม                           |
-| if not ((raw_output_check \> OUT_MAX and error \> 0) or (raw_output_check \< OUT_MIN and error \< 0)): |
-| integral = integral_candidate                                                                          |
-| i_term = integral                                                                                      |
-|                                                                                                        |
-| \# Derivative on Measurement: ลดผลกระทบ Derivative Kick เมื่อเปลี่ยนเป้าหมายกะทันหัน                          |
-| d_term = 0.0                                                                                           |
-| if last_measure is not None and dt \> 0:                                                               |
-| d_term = -KD \* (measure - last_measure) / dt                                                          |
-| last_measure = measure                                                                                 |
-| last_error = error                                                                                     |
-|                                                                                                        |
-| output = p_term + i_term + d_term                                                                      |
-| return max(OUT_MIN, min(OUT_MAX, output)), error                                                       |
-|                                                                                                        |
-| print('=== เริ่มควบคุมตำแหน่งข้อต่อด้วย PID ไปยังมุมเป้าหมาย', TARGET_DEG, 'องศา ===')                           |
-| prev_time = time.ticks_ms()                                                                            |
-| for step in range(400):                                                                                |
-| now = time.ticks_ms()                                                                                  |
-| dt = time.ticks_diff(now, prev_time) / 1000.0                                                          |
-| prev_time = now                                                                                        |
-|                                                                                                        |
-| angle = read_angle_deg()                                                                               |
-| u, err = pid_compute(angle, dt)                                                                        |
-| set_servo_speed(u)                                                                                     |
-|                                                                                                        |
-| if step % 10 == 0:                                                                                     |
-| print('มุมปัจจุบัน: {:.1f} error: {:.1f} output: {:.2f}'.format(angle, err, u))                            |
-| time.sleep(0.05)                                                                                       |
-|                                                                                                        |
-| set_servo_speed(0)                                                                                     |
-| print('=== สิ้นสุดการทดลอง ===')                                                                          |
+```python
+# main.py -- ESP32 MicroPython: PID position control demo (robot joint)
+from machine import Pin, ADC, PWM
+import time
+
+servo = PWM(Pin(18), freq=50)      # เซอร์โวหมุนต่อเนื่อง (สัญญาณ 1.0-2.0 ms)
+pot = ADC(Pin(34))                 # โพเทนชิโอมิเตอร์ป้อนกลับตำแหน่ง
+pot.atten(ADC.ATTN_11DB)
+
+# ---- ปรับค่าเกนตรงนี้เพื่อเปรียบเทียบ P / PI / PID ----
+KP = 1.2
+KI = 0.4     # ตั้งเป็น 0 เพื่อทดสอบแบบ P อย่างเดียว
+KD = 0.05    # ตั้งเป็น 0 เพื่อทดสอบแบบ PI
+TARGET_DEG = 90.0
+
+integral = 0.0
+last_error = 0.0
+last_measure = None
+OUT_MIN, OUT_MAX = -1.0, 1.0
+
+def read_angle_deg():
+    raw = pot.read()                      # 0-4095
+    return raw * 270.0 / 4095.0           # โพเทนชิโอมิเตอร์แบบหมุน 270 องศา
+
+def set_servo_speed(u):
+    # u อยู่ในช่วง -1.0 (หมุนกลับสุด) ถึง +1.0 (หมุนไปสุด), 0 = หยุดนิ่ง
+    u = max(OUT_MIN, min(OUT_MAX, u))
+    pulse_us = 1500 + u * 500             # 1000-2000 us รอบจุดกึ่งกลาง 1500 us
+    duty = int(pulse_us / 20000 * 65535)  # คาบสัญญาณ 20 ms (50 Hz)
+    servo.duty_u16(duty)
+
+def pid_compute(measure, dt):
+    global integral, last_error, last_measure
+    error = TARGET_DEG - measure
+    p_term = KP * error
+
+    integral_candidate = integral + KI * error * dt
+    raw_output_check = p_term + integral_candidate
+    # Anti-Windup แบบ Clamping: หยุดสะสม I เมื่อเอาต์พุตชนขอบและ error ยังผลักไปทางเดิม
+    if not ((raw_output_check > OUT_MAX and error > 0) or (raw_output_check < OUT_MIN and error < 0)):
+        integral = integral_candidate
+    i_term = integral
+
+    # Derivative on Measurement: ลดผลกระทบ Derivative Kick เมื่อเปลี่ยนเป้าหมายกะทันหัน
+    d_term = 0.0
+    if last_measure is not None and dt > 0:
+        d_term = -KD * (measure - last_measure) / dt
+    last_measure = measure
+    last_error = error
+
+    output = p_term + i_term + d_term
+    return max(OUT_MIN, min(OUT_MAX, output)), error
+
+print('=== เริ่มควบคุมตำแหน่งข้อต่อด้วย PID ไปยังมุมเป้าหมาย', TARGET_DEG, 'องศา ===')
+prev_time = time.ticks_ms()
+for step in range(400):
+    now = time.ticks_ms()
+    dt = time.ticks_diff(now, prev_time) / 1000.0
+    prev_time = now
+
+    angle = read_angle_deg()
+    u, err = pid_compute(angle, dt)
+    set_servo_speed(u)
+
+    if step % 10 == 0:
+        print('มุมปัจจุบัน: {:.1f}  error: {:.1f}  output: {:.2f}'.format(angle, err, u))
+    time.sleep(0.05)
+
+set_servo_speed(0)
+print('=== สิ้นสุดการทดลอง ===')
+```
 
 1\. อัปโหลดโค้ดโดยตั้งค่า KI = 0 และ KD = 0 (ตัวควบคุมแบบ P อย่างเดียว)
 สังเกตว่าข้อต่อหยุดตรงมุมเป้าหมายพอดีหรือมีค่าคลาดเคลื่อนค้าง (Steady-State Error)

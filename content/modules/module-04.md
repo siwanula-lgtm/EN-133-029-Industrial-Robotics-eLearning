@@ -130,45 +130,46 @@ Monitor (20 นาที)
 ตารางที่ 4.1 โค้ดภาษา
 MicroPython สำหรับการเปรียบเทียบการเคลื่อนที่แบบจุดต่อจุดกับแบบต่อเนื่อง
 
-| \# main.py -- ESP32 MicroPython: PTP vs Continuous Path (CP) demo, 2-DOF arm |
-|------------------------------------------------------------------------------|
-| from machine import Pin, PWM                                                 |
-| import time                                                                  |
-| servo1 = PWM(Pin(18), freq=50) \# Joint 1                                    |
-| servo2 = PWM(Pin(19), freq=50) \# Joint 2                                    |
-|                                                                              |
-| def set_angle(servo, angle):                                                 |
-| duty = int(1638 + (angle / 180) \* (8192 - 1638))                            |
-| servo.duty_u16(duty)                                                         |
-|                                                                              |
-| waypoints = \[(0, 90), (45, 60), (90, 30), (135, 60), (180, 90)\]            |
-|                                                                              |
-| def move_ptp(theta1, theta2):                                                |
-| \# กระโดดตรงไปตำแหน่งเป้าหมายทันที (จำลอง Point-to-Point)                        |
-| set_angle(servo1, theta1)                                                    |
-| set_angle(servo2, theta2)                                                    |
-| time.sleep(0.8) \# หยุดสั้น ๆ ที่แต่ละจุด                                           |
-|                                                                              |
-| def move_cp(theta1_start, theta2_start, theta1_end, theta2_end, steps=20):   |
-| \# ขยับทีละองศาผ่านจุดกลาง ไม่หยุดระหว่างทาง (จำลอง Continuous Path)                |
-| for i in range(steps + 1):                                                   |
-| t1 = theta1_start + (theta1_end - theta1_start) \* i / steps                 |
-| t2 = theta2_start + (theta2_end - theta2_start) \* i / steps                 |
-| set_angle(servo1, t1)                                                        |
-| set_angle(servo2, t2)                                                        |
-| time.sleep(0.03) \# ไม่มีการหยุดสนิทระหว่างจุด                                     |
-|                                                                              |
-| print('=== โหมด PTP (กระโดดตรงไปแต่ละจุด) ===')                                |
-| for th1, th2 in waypoints:                                                   |
-| move_ptp(th1, th2)                                                           |
-|                                                                              |
-| time.sleep(2.0)                                                              |
-|                                                                              |
-| print('=== โหมด CP (เคลื่อนที่ต่อเนื่องผ่านทุกจุด) ===')                               |
-| for i in range(len(waypoints) - 1):                                          |
-| t1a, t2a = waypoints\[i\]                                                    |
-| t1b, t2b = waypoints\[i + 1\]                                                |
-| move_cp(t1a, t2a, t1b, t2b)                                                  |
+```python
+# main.py -- ESP32 MicroPython: PTP vs Continuous Path (CP) demo, 2-DOF arm
+from machine import Pin, PWM
+import time
+servo1 = PWM(Pin(18), freq=50)   # Joint 1
+servo2 = PWM(Pin(19), freq=50)   # Joint 2
+
+def set_angle(servo, angle):
+    duty = int(1638 + (angle / 180) * (8192 - 1638))
+    servo.duty_u16(duty)
+
+waypoints = [(0, 90), (45, 60), (90, 30), (135, 60), (180, 90)]
+
+def move_ptp(theta1, theta2):
+    # กระโดดตรงไปตำแหน่งเป้าหมายทันที (จำลอง Point-to-Point)
+    set_angle(servo1, theta1)
+    set_angle(servo2, theta2)
+    time.sleep(0.8)   # หยุดสั้น ๆ ที่แต่ละจุด
+
+def move_cp(theta1_start, theta2_start, theta1_end, theta2_end, steps=20):
+    # ขยับทีละองศาผ่านจุดกลาง ไม่หยุดระหว่างทาง (จำลอง Continuous Path)
+    for i in range(steps + 1):
+        t1 = theta1_start + (theta1_end - theta1_start) * i / steps
+        t2 = theta2_start + (theta2_end - theta2_start) * i / steps
+        set_angle(servo1, t1)
+        set_angle(servo2, t2)
+        time.sleep(0.03)   # ไม่มีการหยุดสนิทระหว่างจุด
+
+print('=== โหมด PTP (กระโดดตรงไปแต่ละจุด) ===')
+for th1, th2 in waypoints:
+    move_ptp(th1, th2)
+
+time.sleep(2.0)
+
+print('=== โหมด CP (เคลื่อนที่ต่อเนื่องผ่านทุกจุด) ===')
+for i in range(len(waypoints) - 1):
+    t1a, t2a = waypoints[i]
+    t1b, t2b = waypoints[i + 1]
+    move_cp(t1a, t2a, t1b, t2b)
+```
 
 1\. เปิดโปรแกรม Visual Studio Code เชื่อมต่อ ESP32 ผ่าน USB แล้วอัปโหลดไฟล์
 main.py ตามตารางที่ 4.1
