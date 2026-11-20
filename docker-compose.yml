@@ -6,3 +6,8 @@ services:
     ports:
       - "8030:3000"
     restart: unless-stopped
+    volumes:
+      - visitor-stats:/app/data   # เก็บสถิติการเข้าใช้ถาวร ไม่หายเมื่อ build ใหม่
+
+volumes:
+  visitor-stats:

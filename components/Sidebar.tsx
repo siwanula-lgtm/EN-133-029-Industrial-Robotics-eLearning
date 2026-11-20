@@ -15,6 +15,7 @@ import {
   NotebookText,
 } from "lucide-react";
 import { modules } from "@/lib/modules-data";
+import VisitCounter from "./VisitCounter";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -188,6 +189,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             <SidebarLink href="https://www.espressif.com/en/products/socs/esp32" label="Espressif ESP32" external onClick={onClose} />
             <SidebarLink href="https://petercorke.com/toolboxes/robotics-toolbox/" label="Robotics Toolbox (Peter Corke)" external onClick={onClose} />
           </SidebarSection>
+          <SidebarLink href="/stats" label="📊 สถิติการเข้าใช้เว็บไซต์" isActive={pathname === "/stats"} onClick={onClose} />
+          <div className="mt-3">
+            <VisitCounter compact />
+          </div>
         </nav>
       </aside>
     </>
